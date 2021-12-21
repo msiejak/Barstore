@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Barstore</string>
+    <string name="fab_content_desc">Add new barcode</string>
+</resources>
