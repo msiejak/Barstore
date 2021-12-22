@@ -139,7 +139,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun processImage(image: Bitmap) {
-//        val image = InputImage.fromBitmap(BitmapFactory.decodeStream(assets.open("barcode.jpg")), 90)
         val bitmap = InputImage.fromBitmap(image, 0)
         val options = BarcodeScannerOptions.Builder()
             .setBarcodeFormats(
