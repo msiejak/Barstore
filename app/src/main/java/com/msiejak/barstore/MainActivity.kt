@@ -16,6 +16,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.libraries.barhopper.RecognitionOptions.CODE_128
+import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.color.DynamicColors
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.barcode.common.Barcode.BarcodeFormat
@@ -28,8 +30,9 @@ import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
      private lateinit var binding: ActivityMainBinding
+     private var sheetDialog: BottomSheetDialog? = null
 
     companion object {
         const val BRIGHTNESS_NORMAL = -1F
@@ -39,6 +42,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        DynamicColors.applyIfAvailable(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.fab.setOnClickListener {
@@ -52,37 +56,41 @@ class MainActivity : AppCompatActivity() {
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
     fun viewBarcode(barcode: Barcode) {
+        sheetDialog = BottomSheetDialog(this)
+        sheetDialog!!.setContentView(R.layout.code_sheet)
+        sheetDialog!!.show()
         setWinBrightness(BRIGHTNESS_MAX)
-        var imageView = ImageView(this)
+        val imageView: ImageView? = sheetDialog!!.findViewById(R.id.image)
         val multiFormatWriter = MultiFormatWriter()
         try {
             val bitMatrix: BitMatrix = multiFormatWriter.encode(
                 barcode.barcodeString,
-                zxingBarcodeFormat.UPC_A,
-                imageView.getWidth(),
-                imageView.getHeight()
+                Barcode.getBarcodeFormat(barcode.type),
+                250,
+                80
             )
             val bitmap = Bitmap.createBitmap(
-                imageView.getWidth(),
-                imageView.getHeight(),
+                250,
+                80,
                 Bitmap.Config.RGB_565
             )
-            for (i in 0 until imageView.getWidth()) {
-                for (j in 0 until imageView.getHeight()) {
+            for (i in 0 until 250) {
+                for (j in 0 until 80) {
                     bitmap.setPixel(i, j, if (bitMatrix.get(i, j)) Color.BLACK else Color.WHITE)
                 }
             }
-            imageView.setImageBitmap(bitmap)
+            imageView?.setImageBitmap(bitmap)
+            sheetDialog?.findViewById<TextView>(R.id.codeData)?.text = barcode.barcodeString
+            sheetDialog?.setOnCancelListener { setWinBrightness(BRIGHTNESS_NORMAL) }
         } catch (e: WriterException) {
             e.printStackTrace()
         }
     }
-    fun addBarcode() {
+    private fun addBarcode() {
         val size = binding.recyclerView.adapter!!.itemCount
         scanBarcode()
-        binding.recyclerView.adapter?.notifyDataSetChanged()
     }
-    fun scanBarcode() {
+    private fun scanBarcode() {
             val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
             try {
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -99,7 +107,7 @@ class MainActivity : AppCompatActivity() {
     fun displayBarcodeList() {
 
     }
-    fun createBarcodeObj(barcodeData: String, barcodeType: String) {
+    fun createBarcodeObj(barcodeData: String, barcodeType: Int) {
         val barcode = Barcode(barcodeData, barcodeType, null)
         barcode.storeBarcode(this@MainActivity)
     }
@@ -138,7 +146,9 @@ class MainActivity : AppCompatActivity() {
             .addOnSuccessListener { barcodes ->
                     try {
                         Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG).show()
-                        createBarcodeObj(barcodes[0].displayValue!!, barcodes[0].format.toString())
+                        createBarcodeObj(barcodes[0].displayValue!!, barcodes[0].format)
+                        binding.recyclerView.adapter?.notifyDataSetChanged()
+                        binding.recyclerView.invalidate()
                     }catch(e: Exception) {
                         Toast.makeText(this@MainActivity, "No barcode found (succ)", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
@@ -149,10 +159,20 @@ class MainActivity : AppCompatActivity() {
                     exception.printStackTrace()
             }
     }
+
+
+    override fun view(barcode: Barcode) {
+        viewBarcode(barcode)
+    }
 }
 
 class BarcodeAdapter(private val dataSet: JSONArray) :
     RecyclerView.Adapter<BarcodeAdapter.ViewHolder>() {
+
+
+    interface ViewBarcode {
+        fun view(barcode: Barcode)
+    }
 
     /**
      * Provide a reference to the type of views that you are using
@@ -187,7 +207,8 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
 
         viewHolder.textView.text = jsonObj.get("data").toString()
         viewHolder.textView.setOnClickListener {
-            
+            val i = it.context as ViewBarcode
+            i.view(Barcode(jsonObj.get("data").toString(), jsonObj.get("type") as Int, jsonObj.get("name").toString()))
         }
     }
 
