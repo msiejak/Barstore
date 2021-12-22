@@ -64,7 +64,15 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?) 
           return JSONArray("[]")
             }
         }
+
+        fun deleteBarcode(c: Context, index: Int) {
+            val json = getJson(c)
+            json.remove(index)
+            val writer = FileWriter(File(c.filesDir, "barcodes.json"))
+            writer.write(json.toString())
+            writer.close()
         }
+    }
 
     fun storeBarcode(c: Context) {
         val json = "{\"data\":\"$barcodeString\",\"name\":\"$name\",\"type\":$type}"

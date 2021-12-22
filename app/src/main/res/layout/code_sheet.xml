@@ -19,12 +19,36 @@
         android:contentDescription="Barcode" />
 
     <TextView android:layout_marginHorizontal="12dp"
-        android:layout_marginBottom="24dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/TextAppearance.Material3.BodyLarge"
         android:layout_gravity="center"
         android:id="@+id/codeData" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:weightSum="2"
+            android:layout_marginBottom="24dp"
+            android:layout_marginHorizontal="12dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:drawableEnd="@drawable/ic_baseline_delete_forever_24"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:layout_weight="1"
+                android:id="@+id/delete" />
+            <com.google.android.material.button.MaterialButton
+                android:layout_width="wrap_content"
+                android:drawableEnd="@drawable/ic_baseline_share_24"
+                android:layout_height="wrap_content"
+                android:text="@string/share"
+                android:layout_weight="1"
+                android:id="@+id/share" />
+
+        </LinearLayout>
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

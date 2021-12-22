@@ -10,21 +10,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.libraries.barhopper.RecognitionOptions.CODE_128
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.color.DynamicColors
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.barcode.common.Barcode.BarcodeFormat
 import com.google.mlkit.vision.common.InputImage
 import com.msiejak.barstore.databinding.ActivityMainBinding
 import org.json.JSONArray
-import com.google.zxing.BarcodeFormat as zxingBarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
@@ -55,7 +51,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         window.attributes.screenBrightness = brightness
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
-    fun viewBarcode(barcode: Barcode) {
+    fun viewBarcode(barcode: Barcode, index: Int) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
@@ -80,11 +76,18 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 }
             }
             imageView?.setImageBitmap(bitmap)
+            sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
+                deleteBarcode(index)
+            }
             sheetDialog?.findViewById<TextView>(R.id.codeData)?.text = barcode.barcodeString
             sheetDialog?.setOnCancelListener { setWinBrightness(BRIGHTNESS_NORMAL) }
         } catch (e: WriterException) {
             e.printStackTrace()
         }
+    }
+    private fun deleteBarcode(index: Int) {
+        Barcode.deleteBarcode(this@MainActivity, index)
+        Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
     }
     private fun addBarcode() {
         val size = binding.recyclerView.adapter!!.itemCount
@@ -107,8 +110,8 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     fun displayBarcodeList() {
 
     }
-    fun createBarcodeObj(barcodeData: String, barcodeType: Int) {
-        val barcode = Barcode(barcodeData, barcodeType, null)
+    fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int) {
+        val barcode = Barcode(barcodeData, barcodeType, barcodeName)
         barcode.storeBarcode(this@MainActivity)
     }
 
@@ -146,9 +149,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             .addOnSuccessListener { barcodes ->
                     try {
                         Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG).show()
-                        createBarcodeObj(barcodes[0].displayValue!!, barcodes[0].format)
-                        binding.recyclerView.adapter?.notifyDataSetChanged()
-                        binding.recyclerView.invalidate()
+                        getName(barcodes[0])
                     }catch(e: Exception) {
                         Toast.makeText(this@MainActivity, "No barcode found (succ)", Toast.LENGTH_SHORT).show()
                         e.printStackTrace()
@@ -159,10 +160,20 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     exception.printStackTrace()
             }
     }
+    fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode) {
+        sheetDialog = BottomSheetDialog(this)
+        sheetDialog!!.setContentView(R.layout.param_sheet)
+        sheetDialog!!.show()
+        sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
+            val name = sheetDialog!!.findViewById<EditText>(R.id.nameInput)!!.text.toString()
+            createBarcodeObj(barcode.rawValue, name,  barcode.format)
+            sheetDialog!!.dismiss()
+        }
+    }
 
 
-    override fun view(barcode: Barcode) {
-        viewBarcode(barcode)
+    override fun view(barcode: Barcode, position: Int) {
+        viewBarcode(barcode, position)
     }
 }
 
@@ -171,7 +182,7 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
 
 
     interface ViewBarcode {
-        fun view(barcode: Barcode)
+        fun view(barcode: Barcode, position: Int)
     }
 
     /**
@@ -205,10 +216,10 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         val json: JSONArray = dataSet
         val jsonObj = json.getJSONObject(position)
 
-        viewHolder.textView.text = jsonObj.get("data").toString()
+        viewHolder.textView.text = jsonObj.get("name").toString()
         viewHolder.textView.setOnClickListener {
             val i = it.context as ViewBarcode
-            i.view(Barcode(jsonObj.get("data").toString(), jsonObj.get("type") as Int, jsonObj.get("name").toString()))
+            i.view(Barcode(jsonObj.get("data").toString(), jsonObj.get("type") as Int, jsonObj.get("name").toString()), position)
         }
     }
 
