@@ -3,10 +3,14 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="app/src/dogfood/res/drawable/ic_launcher_foreground.xml" value="0.112" />
+        <entry key="app/src/main/res/drawable/ic_launcher_foreground.xml" value="0.112" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.26646403242147926" />
         <entry key="app/src/main/res/layout/barcode_item.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/code_sheet.xml" value="0.15070921985815602" />
         <entry key="app/src/main/res/layout/param_sheet.xml" value="0.1685185185185185" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.112" />
+        <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.112" />
       </map>
     </option>
   </component>
