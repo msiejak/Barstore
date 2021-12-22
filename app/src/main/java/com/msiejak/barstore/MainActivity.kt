@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
@@ -24,6 +25,7 @@ import org.json.JSONArray
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
+import java.io.ByteArrayOutputStream
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -77,17 +79,30 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             }
             imageView?.setImageBitmap(bitmap)
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
-                deleteBarcode(index)
+                Barcode.deleteBarcode(this@MainActivity, index)
+                Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
+            }
+            sheetDialog?.findViewById<MaterialButton>(R.id.share)?.setOnClickListener {
+                val shareIntent = Intent()
+                shareIntent.action = Intent.ACTION_SEND
+                shareIntent.type = "image/*"
+                val stream = ByteArrayOutputStream()
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
+                val imageUri =
+                    android.net.Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, bitmap, "", ""))
+                shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
+                shareIntent.putExtra(Intent.EXTRA_TEXT, barcode.barcodeString)
+                try {
+                    startActivity(Intent.createChooser(shareIntent, "Share barcode"))
+                } catch (e: ActivityNotFoundException) {
+                    Toast.makeText(this@MainActivity, "No app to share", Toast.LENGTH_SHORT).show()
+                }
             }
             sheetDialog?.findViewById<TextView>(R.id.codeData)?.text = barcode.barcodeString
             sheetDialog?.setOnCancelListener { setWinBrightness(BRIGHTNESS_NORMAL) }
         } catch (e: WriterException) {
             e.printStackTrace()
         }
-    }
-    private fun deleteBarcode(index: Int) {
-        Barcode.deleteBarcode(this@MainActivity, index)
-        Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
     }
     private fun addBarcode() {
         val size = binding.recyclerView.adapter!!.itemCount
@@ -191,10 +206,12 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView
+        val root: MaterialCardView
 
         init {
             // Define click listener for the ViewHolder's View.
             textView = view.findViewById(R.id.name)
+            root = view.findViewById(R.id.root)
 
         }
     }
@@ -217,7 +234,7 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         val jsonObj = json.getJSONObject(position)
 
         viewHolder.textView.text = jsonObj.get("name").toString()
-        viewHolder.textView.setOnClickListener {
+        viewHolder.root.setOnClickListener {
             val i = it.context as ViewBarcode
             i.view(Barcode(jsonObj.get("data").toString(), jsonObj.get("type") as Int, jsonObj.get("name").toString()), position)
         }
