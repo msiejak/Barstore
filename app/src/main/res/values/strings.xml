@@ -5,4 +5,5 @@
     <string name="name">Name</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
+    <string name="search">Search</string>
 </resources>

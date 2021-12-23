@@ -1,5 +1,6 @@
 package com.msiejak.barstore
 
+import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.graphics.Bitmap
@@ -20,11 +21,11 @@ import com.google.android.material.color.DynamicColors
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
-import com.msiejak.barstore.databinding.ActivityMainBinding
-import org.json.JSONArray
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
+import com.msiejak.barstore.databinding.ActivityMainBinding
+import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 
 
@@ -81,6 +82,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
                 Barcode.deleteBarcode(this@MainActivity, index)
                 Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
+            }
+            sheetDialog?.findViewById<MaterialButton>(R.id.search)?.setOnClickListener {
+                val intent = Intent(Intent.ACTION_WEB_SEARCH)
+                intent.putExtra(SearchManager.QUERY, barcode.barcodeString)
+                startActivity(intent)
             }
             sheetDialog?.findViewById<MaterialButton>(R.id.share)?.setOnClickListener {
                 val shareIntent = Intent()
@@ -140,8 +146,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     private fun processImage(image: Bitmap) {
         val bitmap = InputImage.fromBitmap(image, 0)
-        val options = BarcodeScannerOptions.Builder()
-            .setBarcodeFormats(
+        val options = BarcodeScannerOptions.Builder().setBarcodeFormats(
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_AZTEC,
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODABAR,
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_128,
@@ -154,12 +159,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE,
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417
-            )
-            .build()
+                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417,
+            ).build()
 
         val scanner = BarcodeScanning.getClient(options)
-        val result = scanner.process(bitmap)
+        scanner.process(bitmap)
             .addOnSuccessListener { barcodes ->
                     try {
                         Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG).show()

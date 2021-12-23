@@ -83,8 +83,6 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?) 
             FileWriter(File(c.filesDir, "barcodes.json")).use {
                 it.write(barcodes.toString())
             }
-        }else {
-
         }
     }
 
