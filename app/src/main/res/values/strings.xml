@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Barstore</string>
     <string name="fab_content_desc">Add new barcode</string>
-    <string name="enter_name">Almost Done!\nEnter A name below</string>
+    <string name="enter_name">Almost done!\nEnter a name for the barcode below</string>
     <string name="name">Name</string>
     <string name="delete">Delete</string>
     <string name="share">Share</string>
     <string name="search">Search</string>
+    <string name="submit">Submit</string>
 </resources>

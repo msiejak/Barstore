@@ -6,6 +6,7 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:orientation="vertical"
+        android:gravity="center"
         android:layout_height="wrap_content">
 
     <ImageView
