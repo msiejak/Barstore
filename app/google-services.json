@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "595167364469",
+    "project_id": "barstore-270fc",
+    "storage_bucket": "barstore-270fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595167364469:android:9a75c9f3b923f11274ff3c",
+        "android_client_info": {
+          "package_name": "com.msiejak.barstore"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595167364469-8q493trj579mqcajlmd2781hv81b0aan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0mtnLVT6JYd9tk6kgrkTfsYHgsCxwUHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595167364469-8q493trj579mqcajlmd2781hv81b0aan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:595167364469:android:b665e20b8f07e7e474ff3c",
+        "android_client_info": {
+          "package_name": "com.msiejak.barstore.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "595167364469-8q493trj579mqcajlmd2781hv81b0aan.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0mtnLVT6JYd9tk6kgrkTfsYHgsCxwUHc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "595167364469-8q493trj579mqcajlmd2781hv81b0aan.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

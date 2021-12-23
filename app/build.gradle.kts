@@ -1,6 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -11,8 +12,8 @@ android {
         applicationId = "com.msiejak.barstore"
         minSdk = 25
         targetSdk = 32
-        versionCode = 1
-        versionName = "Early Alpha"
+        versionCode = 2
+        versionName = "0.0"
     }
 
     buildFeatures {
@@ -29,6 +30,7 @@ android {
             )
         }
         debug {
+            applicationIdSuffix = ".dev"
             splits.abi.isEnable = false
             splits.density.isEnable = false
         }
@@ -52,9 +54,6 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
 }
 
 dependencies {
@@ -65,5 +64,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     implementation("com.google.mlkit:barcode-scanning:17.0.1")
     implementation("com.google.zxing:core:3.4.1")
+    implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
+//    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-analytics-ktx")
 
 }
