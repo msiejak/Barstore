@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -36,13 +35,12 @@ import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
 import java.util.*
-import kotlin.coroutines.coroutineContext
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
-     private lateinit var binding: ActivityMainBinding
-     private var sheetDialog: BottomSheetDialog? = null
-     private lateinit var dataSet: JSONArray
+    private lateinit var binding: ActivityMainBinding
+    private var sheetDialog: BottomSheetDialog? = null
+    private lateinit var dataSet: JSONArray
 
     companion object {
         const val BRIGHTNESS_NORMAL = -1F
@@ -66,6 +64,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         window.attributes.screenBrightness = brightness
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
+
     fun viewBarcode(barcode: Barcode, index: Int) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
@@ -108,7 +107,14 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 val stream = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
                 val imageUri =
-                    android.net.Uri.parse(MediaStore.Images.Media.insertImage(contentResolver, bitmap, "", ""))
+                    android.net.Uri.parse(
+                        MediaStore.Images.Media.insertImage(
+                            contentResolver,
+                            bitmap,
+                            "",
+                            ""
+                        )
+                    )
                 shareIntent.putExtra(Intent.EXTRA_STREAM, imageUri)
                 shareIntent.putExtra(Intent.EXTRA_TEXT, barcode.barcodeString)
                 try {
@@ -123,21 +129,31 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             e.printStackTrace()
         }
     }
+
     private fun addBarcode() {
         scanBarcode()
     }
+
     private fun scanBarcode() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val outputFileUri = File(externalCacheDir?.path, "image.png")
         outputFileUri.createNewFile()
 
-        intent.putExtra(MediaStore.EXTRA_OUTPUT, FileProvider.getUriForFile(applicationContext, applicationContext.packageName + ".provider", outputFileUri))
-            try {
-                startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-            } catch (e: ActivityNotFoundException) {
-                //no camara app found
-            }
+        intent.putExtra(
+            MediaStore.EXTRA_OUTPUT,
+            FileProvider.getUriForFile(
+                applicationContext,
+                applicationContext.packageName + ".provider",
+                outputFileUri
+            )
+        )
+        try {
+            startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
+        } catch (e: ActivityNotFoundException) {
+            //no camara app found
+        }
     }
+
     private fun refreshRecyclerView() {
         val rv = binding.recyclerView
         dataSet = Barcode.getJson(this@MainActivity)
@@ -164,48 +180,52 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     private fun processImage(image: Bitmap) {
         val bitmap = InputImage.fromBitmap(image, 0)
         val options = BarcodeScannerOptions.Builder().setBarcodeFormats(
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_AZTEC,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODABAR,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_128,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_39,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_93,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_DATA_MATRIX,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_13,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_8,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_ITF,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417,
-            ).build()
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_AZTEC,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODABAR,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_128,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_39,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_93,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_DATA_MATRIX,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_13,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_8,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_ITF,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417,
+        ).build()
 
         val scanner = BarcodeScanning.getClient(options)
         scanner.process(bitmap)
             .addOnSuccessListener { barcodes ->
-                    try {
-                        Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG).show()
-                        getName(barcodes[0])
+                try {
+                    Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG)
+                        .show()
+                    getName(barcodes[0])
 
-                    }catch(e: Exception) {
-                        Toast.makeText(this@MainActivity, "No barcode found (succ)", Toast.LENGTH_SHORT).show()
-                        e.printStackTrace()
-                    }
-                if(BuildConfig.DEBUG) {
+                } catch (e: Exception) {
+                    Toast.makeText(this@MainActivity, "No barcode found (succ)", Toast.LENGTH_SHORT)
+                        .show()
+                    e.printStackTrace()
+                }
+                if (BuildConfig.DEBUG) {
                     saveImageToCache(image)
                 }
-                }
+            }
             .addOnFailureListener { exception ->
-                    Toast.makeText(this@MainActivity, "No barcode found (exc)", Toast.LENGTH_SHORT).show()
-                    exception.printStackTrace()
+                Toast.makeText(this@MainActivity, "No barcode found (exc)", Toast.LENGTH_SHORT)
+                    .show()
+                exception.printStackTrace()
             }
     }
+
     fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()
         sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
             val name = sheetDialog!!.findViewById<EditText>(R.id.nameInput)!!.text.toString()
-            createBarcodeObj(barcode.rawValue, name,  barcode.format)
+            createBarcodeObj(barcode.rawValue, name, barcode.format)
             sheetDialog!!.dismiss()
         }
     }
@@ -270,7 +290,13 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         viewHolder.textView.text = jsonObj.get("name").toString()
         viewHolder.root.setOnClickListener {
             val i = it.context as ViewBarcode
-            i.view(Barcode(jsonObj.get("data").toString(), jsonObj.get("type") as Int, jsonObj.get("name").toString()), position)
+            i.view(
+                Barcode(
+                    jsonObj.get("data").toString(),
+                    jsonObj.get("type") as Int,
+                    jsonObj.get("name").toString()
+                ), position
+            )
         }
     }
 

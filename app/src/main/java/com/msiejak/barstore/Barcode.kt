@@ -34,7 +34,7 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?) 
         }
 
         fun getBarcodeFormat(mlkitFormat: Int): BarcodeFormat {
-            when(mlkitFormat) {
+            when (mlkitFormat) {
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_AZTEC -> return BarcodeFormat.AZTEC
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODABAR -> return BarcodeFormat.CODABAR
                 com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_128 -> return BarcodeFormat.CODE_128
@@ -58,10 +58,9 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?) 
                 return FileReader(File(c.filesDir, "barcodes.json")).use {
                     return@use JSONArray(it.readText())
                 }
-            }
-      catch (e: Exception) {
-          createJsonFile(c)
-          return JSONArray("[]")
+            } catch (e: Exception) {
+                createJsonFile(c)
+                return JSONArray("[]")
             }
         }
 
@@ -77,7 +76,7 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?) 
     fun storeBarcode(c: Context) {
         val json = "{\"data\":\"$barcodeString\",\"name\":\"$name\",\"type\":$type}"
         val jsonObj = JSONObject(json)
-        if(File(c.filesDir, "barcodes.json").exists()) {
+        if (File(c.filesDir, "barcodes.json").exists()) {
             val barcodes = JSONArray(File(c.filesDir, "barcodes.json").readText())
             barcodes.put(jsonObj)
             FileWriter(File(c.filesDir, "barcodes.json")).use {

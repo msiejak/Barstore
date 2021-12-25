@@ -5,18 +5,19 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
-        android:layout_marginHorizontal="12dp"
-        android:layout_height="wrap_content">
+        android:orientation="vertical">
 
-        <TextView android:layout_marginHorizontal="12dp"
+        <TextView
+            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/enter_name"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:text="@string/enter_name" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/textField"
@@ -25,18 +26,18 @@
             android:hint="@string/name">
 
             <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/nameInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textAutoComplete"
-                android:id="@+id/nameInput" />
+                android:inputType="textAutoComplete" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/submit"
-            android:id="@+id/submit" />
+            android:text="@string/submit" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -5,56 +5,59 @@
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_height="wrap_content">
-
-    <ImageView
-        android:minWidth="250dp"
-        android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="24dp"
-        android:layout_marginHorizontal="12dp"
-        android:id="@+id/image"
-        android:contentDescription="Barcode" />
-
-    <TextView android:layout_marginHorizontal="12dp"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.Material3.BodyLarge"
-        android:layout_gravity="center"
-        android:id="@+id/codeData" />
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="match_parent"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="24dp"
+            android:contentDescription="Barcode"
+            android:minWidth="250dp" />
+
+        <TextView
+            android:id="@+id/codeData"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp" />
 
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:weightSum="3"
-            android:layout_marginBottom="24dp"
+            android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:layout_height="wrap_content">
+            android:layout_marginBottom="24dp"
+            android:weightSum="3">
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/delete"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
                 android:drawableEnd="@drawable/ic_baseline_delete_forever_24"
-                android:layout_height="wrap_content"
-                android:text="@string/delete"
-                android:layout_weight=".8"
-                android:id="@+id/delete" />
+                android:text="@string/delete" />
+
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/search"
                 android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".8"
                 android:drawableEnd="@drawable/ic_baseline_search_24"
-                android:layout_height="wrap_content"
-                android:text="@string/search"
-                android:layout_weight=".8"
-                android:id="@+id/search" />
+                android:text="@string/search" />
+
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/share"
                 android:layout_width="wrap_content"
-                android:drawableEnd="@drawable/ic_baseline_share_24"
                 android:layout_height="wrap_content"
-                android:text="@string/share"
                 android:layout_weight=".8"
-                android:id="@+id/share" />
+                android:drawableEnd="@drawable/ic_baseline_share_24"
+                android:text="@string/share" />
 
         </LinearLayout>
 

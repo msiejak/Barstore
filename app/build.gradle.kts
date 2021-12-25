@@ -1,7 +1,16 @@
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+}
+
+fun buildTime(): String {
+    val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH:mm:ss")
+    val now = LocalDateTime.now()
+    return dtf.format(now)
 }
 
 android {
@@ -31,10 +40,12 @@ android {
         }
         debug {
             applicationIdSuffix = ".dev"
+            versionNameSuffix = "-dev_${buildTime()}" + "GMT-5"
             splits.abi.isEnable = false
             splits.density.isEnable = false
         }
         create("dogfood") {
+            versionNameSuffix = "-dogfood_${buildTime()}" + "GMT-5"
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
