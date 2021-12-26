@@ -5,6 +5,7 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.gms.google-services")
+    id("com.google.android.gms.oss-licenses-plugin")
 }
 
 fun buildTime(): String {
@@ -31,6 +32,11 @@ android {
 
     buildTypes {
         release {
+            resValue(
+                "bool",
+                "isNotRelease",
+                "false"
+            )
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -39,12 +45,22 @@ android {
             )
         }
         debug {
+            resValue(
+                "bool",
+                "isNotRelease",
+                "true"
+            )
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev_${buildTime()}" + "GMT-5"
             splits.abi.isEnable = false
             splits.density.isEnable = false
         }
         create("dogfood") {
+            resValue(
+                "bool",
+                "isNotRelease",
+                "true"
+            )
             versionNameSuffix = "-dogfood_${buildTime()}" + "GMT-5"
             isMinifyEnabled = true
             isShrinkResources = true
@@ -74,11 +90,14 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     testImplementation("junit:junit:4.13.2")
     implementation("com.google.mlkit:barcode-scanning:17.0.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("com.google.zxing:core:3.4.1")
     implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
 //    implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
+//    debugImplementation(project(":internal"))
+//    "dogfoodImplementation"(project(":internal"))
 
 }

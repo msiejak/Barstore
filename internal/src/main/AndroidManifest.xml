@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.msiejak.internal">
+
+    <application>
+        <activity
+            android:name="com.msiejak.internal.ManualFlagOverride"
+            android:exported="true"
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:theme="@style/Theme.Material3.DynamicColors.DayNight"
+            android:name=".InternalChangelogActivity"
+            android:exported="false" />
+    </application>
+
+</manifest>

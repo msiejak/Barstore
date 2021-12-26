@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -34,7 +35,6 @@ import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.util.*
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -58,6 +58,26 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         }
         dataSet = Barcode.getJson(this@MainActivity)
         binding.recyclerView.adapter = BarcodeAdapter(dataSet)
+        binding.toolbar.setOnMenuItemClickListener { item ->
+            when (item.itemId) {
+                R.id.licenses -> {
+                    startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
+                    true
+                }
+                R.id.internalChangelog -> {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            Class.forName("com.msiejak.internal.InternalChangelogActivity")
+                        )
+                    )
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
     }
 
     fun setWinBrightness(brightness: Float) {
@@ -120,7 +140,8 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 try {
                     startActivity(Intent.createChooser(shareIntent, "Share barcode"))
                 } catch (e: ActivityNotFoundException) {
-                    Toast.makeText(this@MainActivity, "No app to share", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MainActivity, "No app to share", Toast.LENGTH_SHORT)
+                        .show()
                 }
             }
             sheetDialog?.findViewById<TextView>(R.id.codeData)?.text = barcode.barcodeString
@@ -199,12 +220,10 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         scanner.process(bitmap)
             .addOnSuccessListener { barcodes ->
                 try {
-                    Toast.makeText(this@MainActivity, barcodes[0].displayValue, Toast.LENGTH_LONG)
-                        .show()
                     getName(barcodes[0])
 
                 } catch (e: Exception) {
-                    Toast.makeText(this@MainActivity, "No barcode found (succ)", Toast.LENGTH_SHORT)
+                    Toast.makeText(this@MainActivity, "No barcode found", Toast.LENGTH_SHORT)
                         .show()
                     e.printStackTrace()
                 }
@@ -213,8 +232,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 }
             }
             .addOnFailureListener { exception ->
-                Toast.makeText(this@MainActivity, "No barcode found (exc)", Toast.LENGTH_SHORT)
-                    .show()
                 exception.printStackTrace()
             }
     }
@@ -237,7 +254,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
         fileOutputStream.close()
-        Toast.makeText(this@MainActivity, "Saved image", Toast.LENGTH_LONG).show()
+        Toast.makeText(
+            this@MainActivity,
+            "(debug) saved image to internal cache",
+            Toast.LENGTH_LONG
+        ).show()
     }
 
 
