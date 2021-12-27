@@ -1,11 +1,14 @@
 package com.msiejak.barstore
 
+import android.Manifest
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -13,8 +16,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -22,12 +29,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
+import com.jayway.jsonpath.JsonPath
 import com.msiejak.barstore.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,6 +44,8 @@ import org.json.JSONArray
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -47,6 +58,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         const val BRIGHTNESS_MAX = 1F
         const val REQUEST_IMAGE_CAPTURE = 1
     }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,6 +132,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 intent.putExtra(SearchManager.QUERY, barcode.barcodeString)
                 startActivity(intent)
             }
+            sheetDialog?.findViewById<TextView>(R.id.timeData)?.text = barcode.time
             sheetDialog?.findViewById<MaterialButton>(R.id.share)?.setOnClickListener {
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
@@ -181,8 +194,8 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         rv.adapter = BarcodeAdapter(dataSet)
     }
 
-    fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int) {
-        val barcode = Barcode(barcodeData, barcodeType, barcodeName)
+    fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int, time: String) {
+        val barcode = Barcode(barcodeData, barcodeType, barcodeName, time)
         barcode.storeBarcode(this@MainActivity)
         refreshRecyclerView()
     }
@@ -220,7 +233,18 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         scanner.process(bitmap)
             .addOnSuccessListener { barcodes ->
                 try {
-                    getName(barcodes[0])
+                    var time = "Unknown"
+//                    if (Build.VERSION.SDK_INT >= 29) {
+//
+//                    }else {
+                        fun getCurrTime(): String {
+                            val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
+                            val now = LocalDateTime.now()
+                            return dtf.format(now)
+                        }
+                        time = getCurrTime()
+                        getName(barcodes[0], time)
+//                    }
 
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, "No barcode found", Toast.LENGTH_SHORT)
@@ -236,13 +260,13 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             }
     }
 
-    fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode) {
+    fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()
         sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
             val name = sheetDialog!!.findViewById<EditText>(R.id.nameInput)!!.text.toString()
-            createBarcodeObj(barcode.rawValue, name, barcode.format)
+            createBarcodeObj(barcode.rawValue!!, name, barcode.format, time)
             sheetDialog!!.dismiss()
         }
     }
@@ -272,6 +296,7 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
 
 
     interface ViewBarcode {
+
         fun view(barcode: Barcode, position: Int)
     }
 
@@ -307,6 +332,13 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         // contents of the view with that element
         val json: JSONArray = dataSet
         val jsonObj = json.getJSONObject(position)
+        var time = "Unknown"
+        try {
+            time = jsonObj.get("time").toString()
+        }catch(e: Exception) {
+            e.printStackTrace()
+        }
+        Toast.makeText(viewHolder.root.context, JsonPath.read<JSONArray>(dataSet, "$[*].name").toString(), Toast.LENGTH_LONG).show()
 
         viewHolder.textView.text = jsonObj.get("name").toString()
         viewHolder.root.setOnClickListener {
@@ -315,7 +347,8 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
                 Barcode(
                     jsonObj.get("data").toString(),
                     jsonObj.get("type") as Int,
-                    jsonObj.get("name").toString()
+                    jsonObj.get("name").toString(),
+                    time
                 ), position
             )
         }

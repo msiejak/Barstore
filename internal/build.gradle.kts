@@ -8,7 +8,7 @@ android {
     buildToolsVersion = "32.0.0"
 
     defaultConfig {
-        minSdk = 25
+        minSdk = 26
         targetSdk = 32
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
