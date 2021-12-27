@@ -98,6 +98,15 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     )
                     true
                 }
+                R.id.settings -> {
+                    startActivity(
+                        Intent(
+                            this@MainActivity,
+                            Class.forName("com.msiejak.internal.ManualFlagOverride")
+                        )
+                    )
+                    true
+                }
                 else -> {
                     false
                 }

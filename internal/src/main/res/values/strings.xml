@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="apply_dummy_data">Overwrite with dummy data</string>
+    <string name="overwrite">Overwrite</string>
+    <string name="pull_data">Export data</string>
+    <string name="push_data">Import data</string>
+    <string name="warning">After making changes, you may have to kill the app</string>
+</resources>
