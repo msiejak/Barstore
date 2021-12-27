@@ -3,6 +3,7 @@ package com.msiejak.barstore
 import android.Manifest
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -74,6 +75,18 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             when (item.itemId) {
                 R.id.licenses -> {
                     startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
+                    true
+                }
+                R.id.clearAll -> {
+                    MaterialAlertDialogBuilder(this@MainActivity)
+                        .setTitle(R.string.clear_all)
+                        .setMessage(R.string.clear_all_confirmation)
+                        .setPositiveButton(android.R.string.yes) { _, _ ->
+                            File(filesDir, "barcodes.json").delete()
+                            refreshRecyclerView()
+                        }
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
                     true
                 }
                 R.id.internalChangelog -> {
@@ -170,7 +183,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     private fun scanBarcode() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        val outputFileUri = File(externalCacheDir?.path, "image.png")
+        val outputFileUri = File(cacheDir?.path, "image.png")
         outputFileUri.createNewFile()
 
         intent.putExtra(
@@ -192,6 +205,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         val rv = binding.recyclerView
         dataSet = Barcode.getJson(this@MainActivity)
         rv.adapter = BarcodeAdapter(dataSet)
+        if(binding.recyclerView.adapter?.itemCount == 0) {
+            binding.emptyContainer.visibility = View.VISIBLE
+        }else {
+            binding.emptyContainer.visibility = View.GONE
+        }
     }
 
     fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int, time: String) {
@@ -205,7 +223,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         var image: Bitmap? = null
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             lifecycleScope.launch(Dispatchers.IO) {
-                image = BitmapFactory.decodeFile(File(externalCacheDir, "image.png").path)
+                image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
             }.invokeOnCompletion { processImage(image!!) }
 
         }
@@ -272,7 +290,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     fun saveImageToCache(image: Bitmap) {
-        val file = File(cacheDir, "${System.currentTimeMillis()}.png")
+        val file = File(externalCacheDir, "${System.currentTimeMillis()}.png")
         file.createNewFile()
         val fileOutputStream = FileOutputStream(file)
         image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
@@ -280,7 +298,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         fileOutputStream.close()
         Toast.makeText(
             this@MainActivity,
-            "(debug) saved image to internal cache",
+            "(debug) saved image to external cache",
             Toast.LENGTH_LONG
         ).show()
     }
@@ -338,7 +356,7 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         }catch(e: Exception) {
             e.printStackTrace()
         }
-        Toast.makeText(viewHolder.root.context, JsonPath.read<JSONArray>(dataSet, "$[*].name").toString(), Toast.LENGTH_LONG).show()
+//        Toast.makeText(viewHolder.root.context, JsonPath.read<JSONArray>(dataSet, "$[*].name").toString(), Toast.LENGTH_LONG).show()
 
         viewHolder.textView.text = jsonObj.get("name").toString()
         viewHolder.root.setOnClickListener {

@@ -42,7 +42,7 @@ class InternalChangelogActivity : AppCompatActivity() {
                     .padding(8.dp)
             ) {
                 Text(
-                    "Internal Changelog (2.2)",
+                    "Internal Changelog",
                     textAlign = TextAlign.Center,
                     style = MaterialTheme.typography.h5,
                     modifier = Modifier
@@ -50,17 +50,8 @@ class InternalChangelogActivity : AppCompatActivity() {
                         .padding(bottom = 8.dp)
                 )
                 UpdateCard(
-                    releaseName = "Dogfood 1",
-                    body = "• Material You redesign\n• New internal changelog built with Jetpack Compose\n• Bugfixes\n• Reduced spacing between cards"
-                )
-                UpdateCard(
-                    releaseName = "Dogfood 2",
-                    body = "• Material You redesign\n• Bugfixes\n• Replacing custom \"Toolbars\" and other Widgets with Material3 versions\n" +
-                            "• Removed \"Hide Title when scrolling\" from settings\n• Updated casing in settings\n• Added swipe-away functionality with snackbars\n\nKnown bug: Only modules in course 1 currently work"
-                )
-                UpdateCard(
-                    releaseName = "Dogfood 3",
-                    body = "• Material You redesign\n• Bugfixes\n• Replacing custom \"Toolbars\" and other Widgets with Material3 versions\n" + "• UI improvements"
+                    releaseName = "0.0 (3)",
+                    body = "• UI Bugfixes\n• Added internal changelog\n• Added message when there are no barcodes stored\n• Added backup rules\n• Added option to clear all barcodes"
                 )
                 Row {
                     Button(

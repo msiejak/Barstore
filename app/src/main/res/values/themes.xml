@@ -2,5 +2,6 @@
     <!-- Base application theme. -->
     <style name="Theme.Barstore" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="materialCardViewStyle">@style/Theme.Barstore.materialCardView</item>
+        <item name="android:windowTranslucentNavigation">true</item>
     </style>
 </resources>

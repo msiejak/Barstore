@@ -8,6 +8,9 @@
         android:id="@+id/settings"
         android:title="@string/settings" />
     <item
+        android:id="@+id/clearAll"
+        android:title="@string/clear_all" />
+    <item
         android:id="@+id/licenses"
         android:title="@string/licenses" />
 

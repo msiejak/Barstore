@@ -1,13 +1,14 @@
-import org.jetbrains.kotlin.kapt3.base.Kapt.kapt
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 plugins {
     id("com.android.application")
-    id("org.jetbrains.kotlin.android")
+    id("kotlin-android")
     id("com.google.gms.google-services")
     id("com.google.android.gms.oss-licenses-plugin")
     id("kotlin-kapt")
+    id("com.google.firebase.crashlytics")
+    id("com.google.firebase.firebase-perf")
 }
 
 fun buildTime(): String {
@@ -90,7 +91,6 @@ dependencies {
     implementation("androidx.appcompat:appcompat:1.4.0")
     implementation("com.google.android.material:material:1.6.0-alpha01")
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
-    testImplementation("junit:junit:4.13.2")
     implementation("com.google.mlkit:barcode-scanning:17.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
@@ -99,8 +99,8 @@ dependencies {
 //    implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.jayway.jsonpath:json-path:2.5.0")
-//    debugImplementation(project(":internal"))
-//    "dogfoodImplementation"(project(":internal"))
+    implementation("com.jayway.jsonpath:json-path:2.6.0")
+    debugImplementation(project(":internal"))
+    "dogfoodImplementation"(project(":internal"))
 
 }

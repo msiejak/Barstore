@@ -14,7 +14,7 @@
         </activity>
         <activity
             android:theme="@style/Theme.Material3.DynamicColors.DayNight"
-            android:name=".InternalChangelogActivity"
+            android:name="com.msiejak.internal.InternalChangelogActivity"
             android:exported="false" />
     </application>
 
