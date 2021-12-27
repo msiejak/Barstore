@@ -3,8 +3,6 @@ package com.msiejak.internal;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -16,14 +14,14 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
 public class ManualFlagOverride extends AppCompatActivity {
+
+    private static final int CREATE_FILE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +56,6 @@ public class ManualFlagOverride extends AppCompatActivity {
             createFile();
         });
     }
-
-    private static final int CREATE_FILE = 1;
 
     private void createFile() {
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);

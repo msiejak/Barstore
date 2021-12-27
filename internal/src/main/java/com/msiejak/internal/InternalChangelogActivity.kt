@@ -54,7 +54,8 @@ class InternalChangelogActivity : AppCompatActivity() {
                 )
                 UpdateCard(
                     releaseName = "0.0 (3)",
-                    body = "• UI Bugfixes\n• Added internal changelog\n• Added message when there are no barcodes stored\n• Added backup rules\n• Added option to clear all barcodes"
+                    body = "• UI Bugfixes\n• Added internal changelog\n• Added message when there are no barcodes stored\n• Added backup rules\n• Added option to clear all barcodes\n" +
+                            "• Added debug menu (settings, temporarily)"
                 )
                 Row {
                     Button(

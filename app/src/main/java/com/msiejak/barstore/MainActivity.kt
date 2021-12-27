@@ -1,15 +1,11 @@
 package com.msiejak.barstore
 
-import android.Manifest
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
-import android.content.DialogInterface
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.LayoutInflater
@@ -17,12 +13,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
-import androidx.exifinterface.media.ExifInterface
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -37,7 +29,6 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.zxing.MultiFormatWriter
 import com.google.zxing.WriterException
 import com.google.zxing.common.BitMatrix
-import com.jayway.jsonpath.JsonPath
 import com.msiejak.barstore.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -69,8 +60,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         binding.fab.setOnClickListener {
             addBarcode()
         }
-        dataSet = Barcode.getJson(this@MainActivity)
-        binding.recyclerView.adapter = BarcodeAdapter(dataSet)
+        refreshRecyclerView()
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
                 R.id.licenses -> {
@@ -214,9 +204,9 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         val rv = binding.recyclerView
         dataSet = Barcode.getJson(this@MainActivity)
         rv.adapter = BarcodeAdapter(dataSet)
-        if(binding.recyclerView.adapter?.itemCount == 0) {
+        if (binding.recyclerView.adapter?.itemCount == 0) {
             binding.emptyContainer.visibility = View.VISIBLE
-        }else {
+        } else {
             binding.emptyContainer.visibility = View.GONE
         }
     }
@@ -261,16 +251,17 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             .addOnSuccessListener { barcodes ->
                 try {
                     var time = "Unknown"
-//                    if (Build.VERSION.SDK_INT >= 29) {
+
+                    //                    if (Build.VERSION.SDK_INT >= 29) {
 //
 //                    }else {
-                        fun getCurrTime(): String {
-                            val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
-                            val now = LocalDateTime.now()
-                            return dtf.format(now)
-                        }
-                        time = getCurrTime()
-                        getName(barcodes[0], time)
+                    fun getCurrTime(): String {
+                        val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
+                        val now = LocalDateTime.now()
+                        return dtf.format(now)
+                    }
+                    time = getCurrTime()
+                    getName(barcodes[0], time)
 //                    }
 
                 } catch (e: Exception) {
@@ -362,7 +353,7 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         var time = "Unknown"
         try {
             time = jsonObj.get("time").toString()
-        }catch(e: Exception) {
+        } catch (e: Exception) {
             e.printStackTrace()
         }
 //        Toast.makeText(viewHolder.root.context, JsonPath.read<JSONArray>(dataSet, "$[*].name").toString(), Toast.LENGTH_LONG).show()
