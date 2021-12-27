@@ -9,7 +9,12 @@ import java.io.File
 import java.io.FileReader
 import java.io.FileWriter
 
-class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?, @Nullable time: String?) {
+class Barcode(
+    barcodeString: String,
+    barcodeType: Int,
+    @Nullable name: String?,
+    @Nullable time: String?
+) {
     var barcodeString: String = "0"
     var name: String = "Unnamed"
     var type: Int = 0
@@ -78,7 +83,8 @@ class Barcode(barcodeString: String, barcodeType: Int, @Nullable name: String?, 
     }
 
     fun storeBarcode(c: Context) {
-        val json = "{\"data\":\"$barcodeString\",\"name\":\"$name\",\"type\":$type, \"time\":\"$time\"}"
+        val json =
+            "{\"data\":\"$barcodeString\",\"name\":\"$name\",\"type\":$type, \"time\":\"$time\"}"
         val jsonObj = JSONObject(json)
         if (File(c.filesDir, "barcodes.json").exists()) {
             val barcodes = JSONArray(File(c.filesDir, "barcodes.json").readText())
