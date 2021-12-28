@@ -38,6 +38,10 @@ import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import androidx.core.app.ActivityCompat.startActivityForResult
+
+
+
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -177,7 +181,38 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun addBarcode() {
-        scanBarcode()
+        MaterialAlertDialogBuilder(this@MainActivity)
+            .setTitle(R.string.new_barcode)
+            .setMessage(R.string.chose_input)
+            .setPositiveButton(R.string.scan) {_, _ ->
+                scanBarcode()
+            }
+            .setNegativeButton(R.string.chose_image) {_, _ ->
+                choseBarcode()
+            }
+//            .setNeutralButton(R.string.manual) {_, _ ->
+//                enterBarcode()
+//            }
+            .show()
+
+    }
+
+    private val PICK_IMAGE = 4
+    private fun choseBarcode() {
+        val intent = Intent(
+            Intent.ACTION_PICK,
+            MediaStore.Images.Media.INTERNAL_CONTENT_URI
+        )
+        intent.type = "image/*"
+        intent.putExtra("return-data", true)
+        startActivityForResult(intent, PICK_IMAGE)
+
+
+
+//        val intent = Intent()
+//        intent.type = "image/*"
+//        intent.action = Intent.ACTION_GET_CONTENT
+//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
     }
 
     private fun scanBarcode() {
@@ -224,7 +259,12 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             lifecycleScope.launch(Dispatchers.IO) {
                 image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
             }.invokeOnCompletion { processImage(image!!) }
-
+        }
+        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
+            lifecycleScope.launch(Dispatchers.IO) {
+                val d = data?.data
+                image = MediaStore.Images.Media.getBitmap(contentResolver, d)
+            }.invokeOnCompletion { processImage(image!!) }
         }
     }
 

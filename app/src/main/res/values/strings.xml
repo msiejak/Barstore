@@ -14,4 +14,9 @@
     <string name="empty_2">Scan a barcode to get started</string>
     <string name="clear_all">Clear all</string>
     <string name="clear_all_confirmation">Are you sure that you want to clear all items?</string>
+    <string name="new_barcode">New barcode</string>
+    <string name="chose_input">Chose an input method</string>
+    <string name="scan">Scan code</string>
+    <string name="chose_image">Chose image</string>
+    <string name="manual">Manual entry</string>
 </resources>
