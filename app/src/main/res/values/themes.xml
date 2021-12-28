@@ -3,5 +3,6 @@
     <style name="Theme.Barstore" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="materialCardViewStyle">@style/Theme.Barstore.materialCardView</item>
         <item name="android:windowTranslucentNavigation">true</item>
+        <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
 </resources>

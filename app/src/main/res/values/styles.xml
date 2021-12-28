@@ -2,4 +2,23 @@
 <resources>
 
     <style name="Theme.Barstore.materialCardView" parent="Widget.Material3.CardView.Elevated"></style>
+    <style name="Theme.Barstore.materialCardView.sheet" parent="Widget.Material3.CardView.Elevated">
+        <item name="shapeAppearanceOverlay">@style/Theme.Barstore.shapeLarge</item>
+    </style>
+
+    <style name="Theme.Barstore.shapeLarge">
+        <item name="cornerFamilyTopLeft">rounded</item>
+        <item name="cornerFamilyTopRight">rounded</item>
+        <item name="cornerSizeTopLeft">8dp</item>
+        <item name="cornerSizeTopRight">8dp</item>
+        <item name="cornerSizeBottomLeft">0dp</item>
+        <item name="cornerSizeBottomRight">0dp</item>
+    </style>
+    <style name="BottomSheetDialog" parent="@style/ThemeOverlay.Material3.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheet</item>
+        <item name="android:colorBackground">@color/white</item>
+    </style>
+    <style name="BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
 </resources>

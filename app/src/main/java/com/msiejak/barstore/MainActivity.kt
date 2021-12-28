@@ -104,12 +104,12 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         }
     }
 
-    fun setWinBrightness(brightness: Float) {
+    private fun setWinBrightness(brightness: Float) {
         window.attributes.screenBrightness = brightness
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
 
-    fun viewBarcode(barcode: Barcode, index: Int) {
+    private fun viewBarcode(barcode: Barcode, index: Int) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
@@ -211,7 +211,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         }
     }
 
-    fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int, time: String) {
+    private fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int, time: String) {
         val barcode = Barcode(barcodeData, barcodeType, barcodeName, time)
         barcode.storeBarcode(this@MainActivity)
         refreshRecyclerView()
@@ -243,7 +243,8 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE,
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
-            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417,
+            com.google.mlkit.vision.barcode.common.Barcode.TYPE_DRIVER_LICENSE,
+            com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417
         ).build()
 
         val scanner = BarcodeScanning.getClient(options)
@@ -251,10 +252,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             .addOnSuccessListener { barcodes ->
                 try {
                     var time = "Unknown"
-
-                    //                    if (Build.VERSION.SDK_INT >= 29) {
-//
-//                    }else {
                     fun getCurrTime(): String {
                         val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
                         val now = LocalDateTime.now()
@@ -262,7 +259,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     }
                     time = getCurrTime()
                     getName(barcodes[0], time)
-//                    }
 
                 } catch (e: Exception) {
                     Toast.makeText(this@MainActivity, "No barcode found", Toast.LENGTH_SHORT)
@@ -278,7 +274,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             }
     }
 
-    fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
+    private fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()
@@ -289,7 +285,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         }
     }
 
-    fun saveImageToCache(image: Bitmap) {
+    private fun saveImageToCache(image: Bitmap) {
         val file = File(externalCacheDir, "${System.currentTimeMillis()}.png")
         file.createNewFile()
         val fileOutputStream = FileOutputStream(file)
@@ -323,15 +319,8 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
      * (custom ViewHolder).
      */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
-        val root: MaterialCardView
-
-        init {
-            // Define click listener for the ViewHolder's View.
-            textView = view.findViewById(R.id.name)
-            root = view.findViewById(R.id.root)
-
-        }
+        val textView: TextView = view.findViewById(R.id.name)
+        val root: MaterialCardView = view.findViewById(R.id.root)
     }
 
     // Create new views (invoked by the layout manager)
