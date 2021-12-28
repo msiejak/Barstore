@@ -100,6 +100,7 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.jayway.jsonpath:json-path:2.6.0")
+    implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
     debugImplementation(project(":internal"))
     "dogfoodImplementation"(project(":internal"))
 

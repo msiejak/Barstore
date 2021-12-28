@@ -5,4 +5,9 @@
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
     </style>
+    <style name="Theme.Barstore.SplashScreen" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenBackground">@color/ic_launcher_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.Barstore</item>
+    </style>
 </resources>

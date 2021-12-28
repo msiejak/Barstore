@@ -39,9 +39,7 @@ import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import androidx.core.app.ActivityCompat.startActivityForResult
-
-
-
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -58,6 +56,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         DynamicColors.applyIfAvailable(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
