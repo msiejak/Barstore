@@ -52,6 +52,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     companion object {
         const val BRIGHTNESS_NORMAL = -1F
         const val BRIGHTNESS_MAX = 1F
+        const val KEEP_SCREEN_ON = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         const val REQUEST_IMAGE_CAPTURE = 1
         const val PICK_IMAGE = 4
         const val CODE_UPC_A = 0
@@ -111,6 +112,8 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     private fun setWinBrightness(brightness: Float) {
         window.attributes.screenBrightness = brightness
+        if(brightness == BRIGHTNESS_MAX) window.addFlags(KEEP_SCREEN_ON)
+        else window.clearFlags(KEEP_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
 
@@ -141,6 +144,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             imageView?.setImageBitmap(bitmap)
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
                 Barcode.deleteBarcode(this@MainActivity, index)
+                sheetDialog?.dismiss()
                 Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
                 refreshRecyclerView()
             }
