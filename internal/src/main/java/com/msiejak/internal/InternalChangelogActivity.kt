@@ -54,7 +54,7 @@ class InternalChangelogActivity : AppCompatActivity() {
                 )
                 UpdateCard(
                     releaseName = "1.0.0 Dogfood 1 (4)",
-                    body = "• Added settings\n• Moved around toolbar menu options\n• Added manual barcode entry (UPC-E and UPC-A only)\n• Made barcode text selectable\n• Added barcode name in sheet\n• Increased resolution of barcode images by 4X\n• Changed barcode image aspect ratio\n• Added max name length (24 characters)\n • Added ability to change a name"
+                    body = "• Added settings\n• Moved around toolbar menu options\n• Added manual barcode entry (UPC-E and UPC-A only)\n• Made barcode text selectable\n• Added barcode name in sheet\n• Increased resolution of barcode images by 4X\n• Changed barcode image aspect ratio\n• Added max name length (24 characters)\n• Added the ability to change names"
 
                 )
                 UpdateCard(
