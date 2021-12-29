@@ -20,13 +20,14 @@ fun buildTime(): String {
 android {
     compileSdk = 32
     buildToolsVersion = "32.0.0"
+    val subName = "1"
 
     defaultConfig {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
         targetSdk = 32
-        versionCode = 2
-        versionName = "0.0"
+        versionCode = 3
+        versionName = "1.0.0"
     }
 
     buildFeatures {
@@ -64,7 +65,7 @@ android {
                 "isNotRelease",
                 "true"
             )
-            versionNameSuffix = "-dogfood_${buildTime()}" + "GMT-5"
+            versionNameSuffix = "-dogfood " + subName
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -96,11 +97,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("com.google.zxing:core:3.4.1")
     implementation(platform("com.google.firebase:firebase-bom:29.0.3"))
-//    implementation("com.google.firebase:firebase-crashlytics-ktx")
+    implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("com.jayway.jsonpath:json-path:2.6.0")
     implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
+    implementation("androidx.browser:browser:1.4.0")
     debugImplementation(project(":internal"))
     "dogfoodImplementation"(project(":internal"))
 

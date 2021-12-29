@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
     style="@style/Theme.Barstore.materialCardView.sheet"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -11,13 +11,22 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/name"
+            style="@style/TextAppearance.Material3.HeadlineSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
+            android:layout_marginTop="12dp" />
+
+        <TextView
             android:id="@+id/timeData"
             style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginHorizontal="12dp"
-            android:layout_marginTop="24dp" />
+            android:layout_marginTop="6dp" />
 
         <ImageView
             android:id="@+id/image"
@@ -42,8 +51,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="12dp"
-            android:gravity="center"
             android:layout_marginBottom="24dp"
+            android:gravity="center"
             android:weightSum="3">
 
             <com.google.android.material.button.MaterialButton

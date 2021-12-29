@@ -2,7 +2,9 @@ package com.msiejak.barstore
 
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
@@ -15,6 +17,7 @@ import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -23,6 +26,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.textfield.TextInputEditText
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -38,19 +42,22 @@ import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import androidx.core.app.ActivityCompat.startActivityForResult
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     private lateinit var binding: ActivityMainBinding
     private var sheetDialog: BottomSheetDialog? = null
     private lateinit var dataSet: JSONArray
+    private var prefs: SharedPreferences? = null
 
     companion object {
         const val BRIGHTNESS_NORMAL = -1F
         const val BRIGHTNESS_MAX = 1F
         const val REQUEST_IMAGE_CAPTURE = 1
+        const val PICK_IMAGE = 4
+        const val CODE_UPC_A = 0
+        const val CODE_UPC_E = 1
+        const val CODE_INVALID = -1
     }
 
 
@@ -66,10 +73,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         refreshRecyclerView()
         binding.toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
-                R.id.licenses -> {
-                    startActivity(Intent(this@MainActivity, OssLicensesMenuActivity::class.java))
-                    true
-                }
                 R.id.clearAll -> {
                     MaterialAlertDialogBuilder(this@MainActivity)
                         .setTitle(R.string.clear_all)
@@ -95,7 +98,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     startActivity(
                         Intent(
                             this@MainActivity,
-                            Class.forName("com.msiejak.internal.ManualFlagOverride")
+                            SettingsActivity::class.java
                         )
                     )
                     true
@@ -148,6 +151,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 startActivity(intent)
             }
             sheetDialog?.findViewById<TextView>(R.id.timeData)?.text = barcode.time
+            sheetDialog?.findViewById<TextView>(R.id.name)?.text = barcode.name
             sheetDialog?.findViewById<MaterialButton>(R.id.share)?.setOnClickListener {
                 val shareIntent = Intent()
                 shareIntent.action = Intent.ACTION_SEND
@@ -183,20 +187,89 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         MaterialAlertDialogBuilder(this@MainActivity)
             .setTitle(R.string.new_barcode)
             .setMessage(R.string.chose_input)
-            .setPositiveButton(R.string.scan) {_, _ ->
+            .setPositiveButton(R.string.scan) { _, _ ->
                 scanBarcode()
             }
-            .setNegativeButton(R.string.chose_image) {_, _ ->
+            .setNegativeButton(R.string.chose_image) { _, _ ->
                 choseBarcode()
             }
-//            .setNeutralButton(R.string.manual) {_, _ ->
-//                enterBarcode()
-//            }
+            .setNeutralButton(R.string.manual) {_, _ ->
+                enterBarcodeEntry()
+            }
             .show()
 
     }
+    private fun enterBarcodeEntry() {
+        if(prefs == null) {
+            prefs = getSharedPreferences("general", MODE_PRIVATE)
+            enterBarcodeEntry()
+        }else {
+            MaterialAlertDialogBuilder(this@MainActivity)
+                .setTitle(R.string.manual)
+                .setMessage(R.string.manual_warning)
+                .setOnCancelListener {
+                    enterBarcode()
+                }.setPositiveButton(android.R.string.ok) { _, _ ->
+                    enterBarcode()
+                }.show()
+        }
+    }
 
-    private val PICK_IMAGE = 4
+    private fun validateCode(code: String): Int {
+        var retV: Int
+            try {
+                MultiFormatWriter().encode(
+                    code,
+                    Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A),
+                    250,
+                    80
+                )
+                retV = CODE_UPC_A
+            }catch (exc: Exception) {
+                retV = try {
+                    MultiFormatWriter().encode(
+                        code,
+                        Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E),
+                        250,
+                        80
+                    )
+                    CODE_UPC_E
+                }catch (exc: Exception) {
+                    CODE_INVALID
+                }
+            }
+        return retV
+    }
+    private fun enterBarcode() {
+        sheetDialog = BottomSheetDialog(this)
+        sheetDialog!!.setContentView(R.layout.param_sheet)
+        sheetDialog!!.findViewById<View>(R.id.textFieldCode)?.visibility = View.VISIBLE
+        sheetDialog!!.findViewById<TextView>(R.id.message)?.text = getString(R.string.enter_barcode)
+        sheetDialog!!.show()
+        var barcode: Barcode
+        sheetDialog!!.findViewById<MaterialButton>(R.id.submit)?.setOnClickListener {
+            val data = sheetDialog!!.findViewById<TextInputEditText>(R.id.codeInput)?.text.toString()
+            val name = sheetDialog!!.findViewById<TextInputEditText>(R.id.nameInput)?.text.toString()
+            when (validateCode(data))  {
+                CODE_UPC_A -> {
+                    barcode = Barcode(data, com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A, name, getCurrTime())
+                    barcode.storeBarcode(this@MainActivity)
+                    sheetDialog!!.dismiss()
+                    refreshRecyclerView()
+                }
+                CODE_UPC_E -> {
+                    barcode = Barcode(data, com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E, name, getCurrTime())
+                    barcode.storeBarcode(this@MainActivity)
+                    sheetDialog!!.dismiss()
+                    refreshRecyclerView()
+                }
+                CODE_INVALID -> {
+                    Toast.makeText(this@MainActivity, "Invalid barcode", Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+
     private fun choseBarcode() {
         val intent = Intent(
             Intent.ACTION_PICK,
@@ -205,13 +278,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         intent.type = "image/*"
         intent.putExtra("return-data", true)
         startActivityForResult(intent, PICK_IMAGE)
-
-
-
-//        val intent = Intent()
-//        intent.type = "image/*"
-//        intent.action = Intent.ACTION_GET_CONTENT
-//        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
     }
 
     private fun scanBarcode() {
@@ -245,10 +311,21 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         }
     }
 
-    private fun createBarcodeObj(barcodeData: String, barcodeName: String, barcodeType: Int, time: String) {
+    private fun createBarcodeObj(
+        barcodeData: String,
+        barcodeName: String,
+        barcodeType: Int,
+        time: String
+    ) {
         val barcode = Barcode(barcodeData, barcodeType, barcodeName, time)
         barcode.storeBarcode(this@MainActivity)
         refreshRecyclerView()
+    }
+
+    private fun getCurrTime(): String {
+        val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
+        val now = LocalDateTime.now()
+        return dtf.format(now)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -290,13 +367,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         scanner.process(bitmap)
             .addOnSuccessListener { barcodes ->
                 try {
-                    var time = "Unknown"
-                    fun getCurrTime(): String {
-                        val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
-                        val now = LocalDateTime.now()
-                        return dtf.format(now)
-                    }
-                    time = getCurrTime()
+                    val time = getCurrTime()
                     getName(barcodes[0], time)
 
                 } catch (e: Exception) {

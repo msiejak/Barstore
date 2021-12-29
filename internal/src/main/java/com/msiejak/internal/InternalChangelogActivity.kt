@@ -53,10 +53,16 @@ class InternalChangelogActivity : AppCompatActivity() {
                         .padding(bottom = 8.dp)
                 )
                 UpdateCard(
+                    releaseName = "1.0.0 Dogfood 1 (4)",
+                    body = "• Added settings\n• Moved around toolbar menu options\n• Added manual barcode entry (UPC_E and UPC_A only)"
+
+                )
+                UpdateCard(
                     releaseName = "0.0 (3)",
                     body = "• UI Bugfixes\n• Added internal changelog\n• Added message when there are no barcodes stored\n• Added backup rules\n• Added option to clear all barcodes\n" +
                             "• Added debug menu (temporary settings)\n• Added option to pick image from gallery\n" +
-                            "• Added Android Jetpack SplashScreen"
+                            "• Added Android Jetpack SplashScreen\n• Added Crashlytics"
+
                 )
                 Row {
                     Button(

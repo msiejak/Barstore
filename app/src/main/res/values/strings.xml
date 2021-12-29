@@ -19,4 +19,10 @@
     <string name="scan">Scan code</string>
     <string name="chose_image">Chose image</string>
     <string name="manual">Manual entry</string>
+    <string name="changelog">Changelog</string>
+    <string name="dbgm">Debug menu</string>
+    <string name="app_info">App info</string>
+    <string name="manual_warning">Note: You can only enter UPC-A and UPC-E barcodes with manual entry\n\nBe sure to enter the entire barcode (including the little numbers)</string>
+    <string name="enter_barcode">Enter the barcode and a name</string>
+    <string name="barcode">Barcode</string>
 </resources>

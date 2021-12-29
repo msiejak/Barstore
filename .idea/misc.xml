@@ -4,8 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/barcode_item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/code_sheet.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/param_sheet.xml" value="0.1" />
         <entry key="app/src/main/res/menu/main.xml" value="0.1" />
+        <entry key="app/src/main/res/menu/settings.xml" value="0.25" />
         <entry key="internal/src/main/res/layout/activity_manual_flag_override.xml" value="0.1" />
       </map>
     </option>
