@@ -27,6 +27,7 @@ import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
 import com.google.mlkit.vision.barcode.BarcodeScanning
 import com.google.mlkit.vision.common.InputImage
@@ -126,16 +127,16 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             val bitMatrix: BitMatrix = multiFormatWriter.encode(
                 barcode.barcodeString,
                 Barcode.getBarcodeFormat(barcode.type),
-                250,
-                80
+                1000,
+                280
             )
             val bitmap = Bitmap.createBitmap(
-                250,
-                80,
+                1000,
+                280,
                 Bitmap.Config.RGB_565
             )
-            for (i in 0 until 250) {
-                for (j in 0 until 80) {
+            for (i in 0 until 1000) {
+                for (j in 0 until 280) {
                     bitmap.setPixel(i, j, if (bitMatrix.get(i, j)) Color.BLACK else Color.WHITE)
                 }
             }
@@ -144,6 +145,22 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 Barcode.deleteBarcode(this@MainActivity, index)
                 Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
                 refreshRecyclerView()
+            }
+            sheetDialog?.findViewById<MaterialButton>(R.id.edit)?.setOnClickListener {
+                val editTextlLayout = layoutInflater.inflate(R.layout.edittext, null) as TextInputLayout
+                val editText = editTextlLayout.findViewById<TextInputEditText>(R.id.nameInput)
+                MaterialAlertDialogBuilder(this@MainActivity)
+                    .setTitle(R.string.rename_barcode)
+                    .setView(editTextlLayout)
+                    .setPositiveButton(R.string.save) { a, _ ->
+                        Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
+                        Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT).show()
+                        refreshRecyclerView()
+                        a.dismiss()
+                        sheetDialog?.dismiss()
+                    }
+                    .setNegativeButton(android.R.string.cancel, null)
+                    .show()
             }
             sheetDialog?.findViewById<MaterialButton>(R.id.search)?.setOnClickListener {
                 val intent = Intent(Intent.ACTION_WEB_SEARCH)
