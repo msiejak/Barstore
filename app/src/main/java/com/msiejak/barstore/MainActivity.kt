@@ -198,7 +198,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 }
             }
             sheetDialog?.findViewById<TextView>(R.id.codeData)?.text = barcode.barcodeString
-            sheetDialog?.setOnCancelListener { setWinBrightness(BRIGHTNESS_NORMAL) }
+            sheetDialog?.setOnDismissListener { setWinBrightness(BRIGHTNESS_NORMAL) }
         } catch (e: WriterException) {
             e.printStackTrace()
         }

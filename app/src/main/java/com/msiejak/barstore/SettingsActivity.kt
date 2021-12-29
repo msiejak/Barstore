@@ -1,6 +1,7 @@
 package com.msiejak.barstore
 
 import android.content.Intent
+import android.content.pm.PackageInfo
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
@@ -15,10 +16,12 @@ class SettingsActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingsBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
+        DynamicColors.applyIfAvailable(this)
         binding = ActivitySettingsBinding.inflate(layoutInflater)
         super.onCreate(savedInstanceState)
         DynamicColors.applyIfAvailable(this)
         setContentView(binding.root)
+        DynamicColors.applyIfAvailable(this)
         binding.toolbar.setNavigationOnClickListener {
             finish()
         }
@@ -58,6 +61,10 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         }
+        binding.devContact.setOnClickListener {
+            openUrl("mailto:contact@msiejak.dev")
+        }
+
     }
 
     private fun openUrl(url: String) {

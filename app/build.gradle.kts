@@ -28,6 +28,11 @@ android {
         targetSdk = 32
         versionCode = 4
         versionName = "1.0.0"
+        resValue(
+            "string",
+            "build_time",
+            buildTime()
+        )
     }
 
     buildFeatures {
@@ -47,6 +52,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue(
+                "string",
+                "version_name",
+                defaultConfig?.versionName + versionNameSuffix
+            )
         }
         debug {
             resValue(
@@ -58,6 +68,11 @@ android {
             versionNameSuffix = "-dev_${buildTime()}" + "GMT-5"
             splits.abi.isEnable = false
             splits.density.isEnable = false
+            resValue(
+                "string",
+                "version_name",
+                defaultConfig?.versionName + versionNameSuffix
+            )
         }
         create("dogfood") {
             resValue(
@@ -71,6 +86,11 @@ android {
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
+            )
+            resValue(
+                "string",
+                "version_name",
+                defaultConfig?.versionName + versionNameSuffix
             )
         }
     }
@@ -90,7 +110,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("com.google.android.material:material:1.6.0-alpha01")
+    implementation("com.google.android.material:material:1.6.0-alpha02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.2")
     implementation("com.google.mlkit:barcode-scanning:17.0.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
