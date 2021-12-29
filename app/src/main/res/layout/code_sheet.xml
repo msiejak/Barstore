@@ -21,22 +21,22 @@
                 style="@style/TextAppearance.Material3.HeadlineSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:layout_marginHorizontal="12dp"
                 android:layout_marginTop="12dp" />
 
             <com.google.android.material.button.MaterialButton
+                android:id="@+id/edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                app:iconPadding="0dp"
-                app:iconGravity="textStart"
                 android:layout_marginEnd="4dp"
                 android:gravity="center"
-                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton"
-                android:id="@+id/edit"
-                app:icon="@drawable/ic_baseline_edit_24" />
+                app:icon="@drawable/ic_baseline_edit_24"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.Material3.FloatingActionButton" />
 
         </RelativeLayout>
 
@@ -64,10 +64,10 @@
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textIsSelectable="true"
             android:layout_gravity="center"
+            android:layout_marginHorizontal="12dp"
             android:layout_marginTop="4dp"
-            android:layout_marginHorizontal="12dp" />
+            android:textIsSelectable="true" />
 
 
         <LinearLayout

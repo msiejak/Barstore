@@ -2,9 +2,9 @@ package com.msiejak.barstore
 
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
@@ -25,11 +25,21 @@ class SettingsActivity : AppCompatActivity() {
         binding.toolbar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.licenses -> {
-                    startActivity(Intent(this@SettingsActivity, OssLicensesMenuActivity::class.java))
+                    startActivity(
+                        Intent(
+                            this@SettingsActivity,
+                            OssLicensesMenuActivity::class.java
+                        )
+                    )
                     true
                 }
                 R.id.debugMenu -> {
-                    startActivity(Intent(this@SettingsActivity, Class.forName("com.msiejak.internal.ManualFlagOverride")))
+                    startActivity(
+                        Intent(
+                            this@SettingsActivity,
+                            Class.forName("com.msiejak.internal.ManualFlagOverride")
+                        )
+                    )
                     true
                 }
                 R.id.changelog -> {
@@ -43,10 +53,13 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(i)
                     true
                 }
-                else -> {false}
+                else -> {
+                    false
+                }
             }
         }
     }
+
     private fun openUrl(url: String) {
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()

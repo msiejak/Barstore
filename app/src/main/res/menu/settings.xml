@@ -11,6 +11,6 @@
         android:title="@string/app_info" />
     <item
         android:id="@+id/debugMenu"
-        android:visible="@bool/isNotRelease"
-        android:title="@string/dbgm" />
+        android:title="@string/dbgm"
+        android:visible="@bool/isNotRelease" />
 </menu>

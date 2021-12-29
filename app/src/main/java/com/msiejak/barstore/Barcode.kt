@@ -80,6 +80,7 @@ class Barcode(
             writer.write(json.toString())
             writer.close()
         }
+
         fun nameBarcode(c: Context, index: Int, newName: String) {
             val json = getJson(c)
             json.getJSONObject(index).put("name", newName)

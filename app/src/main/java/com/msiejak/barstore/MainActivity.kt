@@ -2,7 +2,6 @@ package com.msiejak.barstore
 
 import android.app.SearchManager
 import android.content.ActivityNotFoundException
-import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Bitmap
@@ -20,7 +19,6 @@ import androidx.core.content.FileProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -147,14 +145,16 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 refreshRecyclerView()
             }
             sheetDialog?.findViewById<MaterialButton>(R.id.edit)?.setOnClickListener {
-                val editTextlLayout = layoutInflater.inflate(R.layout.edittext, null) as TextInputLayout
+                val editTextlLayout =
+                    layoutInflater.inflate(R.layout.edittext, null) as TextInputLayout
                 val editText = editTextlLayout.findViewById<TextInputEditText>(R.id.nameInput)
                 MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(R.string.rename_barcode)
                     .setView(editTextlLayout)
                     .setPositiveButton(R.string.save) { a, _ ->
                         Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
-                        Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT)
+                            .show()
                         refreshRecyclerView()
                         a.dismiss()
                         sheetDialog?.dismiss()
@@ -210,17 +210,18 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             .setNegativeButton(R.string.chose_image) { _, _ ->
                 choseBarcode()
             }
-            .setNeutralButton(R.string.manual) {_, _ ->
+            .setNeutralButton(R.string.manual) { _, _ ->
                 enterBarcodeEntry()
             }
             .show()
 
     }
+
     private fun enterBarcodeEntry() {
-        if(prefs == null) {
+        if (prefs == null) {
             prefs = getSharedPreferences("general", MODE_PRIVATE)
             enterBarcodeEntry()
-        }else {
+        } else {
             MaterialAlertDialogBuilder(this@MainActivity)
                 .setTitle(R.string.manual)
                 .setMessage(R.string.manual_warning)
@@ -234,29 +235,30 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     private fun validateCode(code: String): Int {
         var retV: Int
-            try {
+        try {
+            MultiFormatWriter().encode(
+                code,
+                Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A),
+                250,
+                80
+            )
+            retV = CODE_UPC_A
+        } catch (exc: Exception) {
+            retV = try {
                 MultiFormatWriter().encode(
                     code,
-                    Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A),
+                    Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E),
                     250,
                     80
                 )
-                retV = CODE_UPC_A
-            }catch (exc: Exception) {
-                retV = try {
-                    MultiFormatWriter().encode(
-                        code,
-                        Barcode.getBarcodeFormat(com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E),
-                        250,
-                        80
-                    )
-                    CODE_UPC_E
-                }catch (exc: Exception) {
-                    CODE_INVALID
-                }
+                CODE_UPC_E
+            } catch (exc: Exception) {
+                CODE_INVALID
             }
+        }
         return retV
     }
+
     private fun enterBarcode() {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
@@ -265,17 +267,29 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         sheetDialog!!.show()
         var barcode: Barcode
         sheetDialog!!.findViewById<MaterialButton>(R.id.submit)?.setOnClickListener {
-            val data = sheetDialog!!.findViewById<TextInputEditText>(R.id.codeInput)?.text.toString()
-            val name = sheetDialog!!.findViewById<TextInputEditText>(R.id.nameInput)?.text.toString()
-            when (validateCode(data))  {
+            val data =
+                sheetDialog!!.findViewById<TextInputEditText>(R.id.codeInput)?.text.toString()
+            val name =
+                sheetDialog!!.findViewById<TextInputEditText>(R.id.nameInput)?.text.toString()
+            when (validateCode(data)) {
                 CODE_UPC_A -> {
-                    barcode = Barcode(data, com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A, name, getCurrTime())
+                    barcode = Barcode(
+                        data,
+                        com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
+                        name,
+                        getCurrTime()
+                    )
                     barcode.storeBarcode(this@MainActivity)
                     sheetDialog!!.dismiss()
                     refreshRecyclerView()
                 }
                 CODE_UPC_E -> {
-                    barcode = Barcode(data, com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E, name, getCurrTime())
+                    barcode = Barcode(
+                        data,
+                        com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
+                        name,
+                        getCurrTime()
+                    )
                     barcode.storeBarcode(this@MainActivity)
                     sheetDialog!!.dismiss()
                     refreshRecyclerView()
