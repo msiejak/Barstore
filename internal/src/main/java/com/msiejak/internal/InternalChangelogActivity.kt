@@ -8,10 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.Button
+import androidx.compose.material3.Button
 import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -27,6 +27,7 @@ class InternalChangelogActivity : AppCompatActivity() {
         setTheme(com.google.android.material.R.style.Theme_Material3_DayNight)
         DynamicColors.applyIfAvailable(this)
         setContentView(R.layout.compose_root)
+        DynamicColors.applyIfAvailable(this)
         findViewById<ComposeView>(R.id.root).setContent { App() }
     }
 
@@ -47,7 +48,7 @@ class InternalChangelogActivity : AppCompatActivity() {
                 Text(
                     "Internal Changelog",
                     textAlign = TextAlign.Center,
-                    style = MaterialTheme.typography.h5,
+                    style = MaterialTheme.typography.headlineMedium,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(bottom = 8.dp)
@@ -90,13 +91,13 @@ class InternalChangelogActivity : AppCompatActivity() {
     @Composable
     fun UpdateCard(releaseName: String, body: String) {
         Card(
-            backgroundColor = MaterialTheme.colors.surface, modifier = Modifier
+            backgroundColor = MaterialTheme.colorScheme.surface, modifier = Modifier
                 .fillMaxWidth()
                 .padding(bottom = 8.dp)
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
-                Text(text = releaseName, style = MaterialTheme.typography.h6)
-                Text(text = body, style = MaterialTheme.typography.body2)
+                Text(text = releaseName, style = MaterialTheme.typography.headlineSmall)
+                Text(text = body, style = MaterialTheme.typography.bodyMedium)
             }
         }
     }

@@ -52,9 +52,7 @@ public class ManualFlagOverride extends AppCompatActivity {
         });
 
 
-        findViewById(R.id.exportData).setOnClickListener(v -> {
-            createFile();
-        });
+        findViewById(R.id.exportData).setOnClickListener(v -> createFile());
     }
 
     private void createFile() {

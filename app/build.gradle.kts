@@ -1,3 +1,4 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -17,11 +18,15 @@ fun buildTime(): String {
     return dtf.format(now)
 }
 
+fun getSystemUserName(): String {
+    return System.getProperty("user.name")
+}
+
 android {
     compileSdk = 32
     buildToolsVersion = "32.0.0"
     val subName = "1"
-
+    val username = "-" + getSystemUserName()
     defaultConfig {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
@@ -57,6 +62,16 @@ android {
                 "version_name",
                 defaultConfig?.versionName + versionNameSuffix
             )
+            buildConfigField(
+                "String",
+                "ADMOB_AD_ID",
+                "${gradleLocalProperties(rootDir).getProperty("admob.ad_id")}"
+            )
+            resValue(
+                "string",
+                "admob_app_id",
+                "${gradleLocalProperties(rootDir).getProperty("admob.app_id")}"
+            )
         }
         debug {
             resValue(
@@ -65,13 +80,23 @@ android {
                 "true"
             )
             applicationIdSuffix = ".dev"
-            versionNameSuffix = "-dev_${buildTime()}" + "GMT-5"
+            versionNameSuffix = "-dev_${buildTime()}" + "GMT-5" + username
             splits.abi.isEnable = false
             splits.density.isEnable = false
             resValue(
                 "string",
                 "version_name",
-                defaultConfig?.versionName + versionNameSuffix
+                defaultConfig.versionName + versionNameSuffix + username
+            )
+            buildConfigField(
+                "String",
+                "ADMOB_AD_ID",
+                "\"ca-app-pub-3940256099942544/2247696110\""
+            )
+            resValue(
+                "string",
+                "admob_app_id",
+                "\"ca-app-pub-3940256099942544~3347511713\""
             )
         }
         create("dogfood") {
@@ -91,6 +116,16 @@ android {
                 "string",
                 "version_name",
                 defaultConfig?.versionName + versionNameSuffix
+            )
+            buildConfigField(
+                "String",
+                "ADMOB_AD_ID",
+                "${gradleLocalProperties(rootDir).getProperty("admob.ad_id")}"
+            )
+            resValue(
+                "string",
+                "admob_app_id",
+                "${gradleLocalProperties(rootDir).getProperty("admob.app_id")}"
             )
         }
     }
