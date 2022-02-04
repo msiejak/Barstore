@@ -36,12 +36,6 @@
     "time": "12-27-2021 13:35"
   },
   {
-    "data": "00511302",
-    "name": "$2.00 Off Coupon",
-    "type": 1024,
-    "time": "12-27-2021 13:37"
-  },
-  {
     "data": "040000576099",
     "name": "Dove Caramel Chocolates",
     "type": 512,
@@ -94,12 +88,6 @@
     "name": "Logitech MX Anywhere 3",
     "type": 512,
     "time": "12-27-2021 13:59"
-  },
-  {
-    "data": "462021200294",
-    "name": "TOPS Bonus Card",
-    "type": 512,
-    "time": "12-27-2021 14:01"
   },
   {
     "data": "044000033255",
@@ -138,12 +126,6 @@
     "time": "12-27-2021 13:35"
   },
   {
-    "data": "00511302",
-    "name": "$2.00 Off Coupon",
-    "type": 1024,
-    "time": "12-27-2021 13:37"
-  },
-  {
     "data": "040000576099",
     "name": "Dove Caramel Chocolates",
     "type": 512,
@@ -196,11 +178,5 @@
     "name": "Logitech MX Anywhere 3",
     "type": 512,
     "time": "12-27-2021 13:59"
-  },
-  {
-    "data": "462021200294",
-    "name": "TOPS Bonus Card",
-    "type": 512,
-    "time": "12-27-2021 14:01"
   }
 ]

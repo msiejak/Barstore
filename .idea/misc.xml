@@ -3,19 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2805" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/barcode_item.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/code_sheet.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/edittext.xml" value="0.23505434782608695" />
-        <entry key="app/src/main/res/layout/param_sheet.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/main.xml" value="0.1" />
-        <entry key="app/src/main/res/menu/settings.xml" value="0.25" />
-        <entry key="internal/src/main/res/layout/activity_manual_flag_override.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/activity_settings.xml" value="0.17350557244174267" />
+        <entry key="app/src/main/res/xml/prefs.xml" value="0.17350557244174267" />
+        <entry key="internal/src/main/res/layout/compose_root.xml" value="0.18333333333333332" />
       </map>
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="16" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

@@ -48,19 +48,19 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.4.0")
-    implementation("com.google.android.material:material:1.6.0-alpha01")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
+    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("com.google.android.material:material:1.6.0-alpha02")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("androidx.activity:activity-compose:1.4.0")
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.1.0-rc01")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha02")
+    implementation("androidx.compose.material:material:1.2.0-alpha02")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha04")
     // Animations
-    implementation("androidx.compose.animation:animation:1.1.0-rc01")
+    implementation("androidx.compose.animation:animation:1.2.0-alpha02")
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.1.0-rc01")
+    implementation("androidx.compose.ui:ui-tooling:1.2.0-alpha02")
     // Integration with ViewModels
-    implementation("com.google.android.material:compose-theme-adapter:1.1.2")
+    implementation("com.google.android.material:compose-theme-adapter:1.1.3")
 }

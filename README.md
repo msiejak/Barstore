@@ -1,10 +1,12 @@
 # Barstore
+
 (name isn't set in stone)
 
 ---
-An app to scan and store barcodes, for use at a later time
-You can find the latest stable APK's on the play store, or you can build the main branch yourself
+An app to scan and store barcodes, for use at a later time You can find the latest stable APK's on
+the play store, or you can build the main branch yourself
 ---
+
 ## Building
 
 After you clone the repository, add the following lines in the `barstore/local.properties` file
@@ -20,6 +22,7 @@ or on Windows
 `gradlew.bat assembleDebug --parallel --configure-on-demand`
 
 ---
+
 ## Contributing
 
 Feel free to fork and open a pull request!

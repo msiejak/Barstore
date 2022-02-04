@@ -31,7 +31,7 @@ android {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
         targetSdk = 32
-        versionCode = 4
+        versionCode = 5
         versionName = "1.0.0"
         resValue(
             "string",
@@ -60,7 +60,7 @@ android {
             resValue(
                 "string",
                 "version_name",
-                defaultConfig?.versionName + versionNameSuffix
+                defaultConfig.versionName + versionNameSuffix
             )
             buildConfigField(
                 "String",
@@ -105,7 +105,7 @@ android {
                 "isNotRelease",
                 "true"
             )
-            versionNameSuffix = "-dogfood " + subName
+            versionNameSuffix = "-dogfood $subName"
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -115,7 +115,7 @@ android {
             resValue(
                 "string",
                 "version_name",
-                defaultConfig?.versionName + versionNameSuffix
+                defaultConfig.versionName + versionNameSuffix
             )
             buildConfigField(
                 "String",
@@ -144,10 +144,10 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.0")
+    implementation("androidx.appcompat:appcompat:1.4.1")
     implementation("com.google.android.material:material:1.6.0-alpha02")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.2")
-    implementation("com.google.mlkit:barcode-scanning:17.0.1")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("com.google.mlkit:barcode-scanning:17.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0-native-mt")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.0")
     implementation("com.google.zxing:core:3.4.1")
@@ -155,8 +155,7 @@ dependencies {
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("com.jayway.jsonpath:json-path:2.6.0")
-    implementation("androidx.core:core-splashscreen:1.0.0-alpha02")
+    implementation("androidx.core:core-splashscreen:1.0.0-beta01")
     implementation("androidx.browser:browser:1.4.0")
     debugImplementation(project(":internal"))
     "dogfoodImplementation"(project(":internal"))

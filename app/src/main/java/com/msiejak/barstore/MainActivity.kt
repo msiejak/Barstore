@@ -112,7 +112,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
 
     private fun setWinBrightness(brightness: Float) {
         window.attributes.screenBrightness = brightness
-        if(brightness == BRIGHTNESS_MAX) window.addFlags(KEEP_SCREEN_ON)
+        if (brightness == BRIGHTNESS_MAX) window.addFlags(KEEP_SCREEN_ON)
         else window.clearFlags(KEEP_SCREEN_ON)
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
