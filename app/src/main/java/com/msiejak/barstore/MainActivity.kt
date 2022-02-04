@@ -156,10 +156,14 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     .setTitle(R.string.rename_barcode)
                     .setView(editTextlLayout)
                     .setPositiveButton(R.string.save) { a, _ ->
-                        Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
-                        Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT)
-                            .show()
-                        refreshRecyclerView()
+                        if(editText.text.toString().isNotEmpty()) {
+                            Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
+                            Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT)
+                                .show()
+                            refreshRecyclerView()
+                        }else {
+                            Toast.makeText(this@MainActivity, R.string.empty_name, Toast.LENGTH_SHORT).show()
+                        }
                         a.dismiss()
                         sheetDialog?.dismiss()
                     }
@@ -394,7 +398,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE,
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A,
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E,
-            com.google.mlkit.vision.barcode.common.Barcode.TYPE_DRIVER_LICENSE,
             com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417
         ).build()
 
@@ -425,8 +428,12 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         sheetDialog!!.show()
         sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
             val name = sheetDialog!!.findViewById<EditText>(R.id.nameInput)!!.text.toString()
-            createBarcodeObj(barcode.rawValue!!, name, barcode.format, time)
-            sheetDialog!!.dismiss()
+            if(name.isNotEmpty()) {
+                createBarcodeObj(barcode.rawValue!!, name, barcode.format, time)
+                sheetDialog!!.dismiss()
+            }else {
+                Toast.makeText(this@MainActivity, R.string.empty_name, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 

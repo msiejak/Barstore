@@ -12,6 +12,7 @@
     <string name="internal_changelog">Internal Changelog</string>
     <string name="empty">There\'s nothing here yet</string>
     <string name="empty_2">Scan a barcode to get started</string>
+    <string name="empty_name">Please enter a valid name</string>
     <string name="clear_all">Clear all</string>
     <string name="clear_all_confirmation">Are you sure that you want to clear all items?</string>
     <string name="new_barcode">New barcode</string>
