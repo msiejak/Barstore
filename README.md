@@ -2,9 +2,9 @@
 
 (name is open for suggestions)
 
-An app to scan and store barcodes, for use at a later time. You can find the latest stable APK's on the play store, or you can build the main branch yourself
+An app to scan and store barcodes, for use at a later time. You can find the latest stable APK's on
+the play store (soon), or you can build the main branch yourself
 
----
 
 ## Building
 
@@ -21,7 +21,6 @@ or on Windows
 
 `gradlew.bat assembleDebug --parallel --configure-on-demand`
 
----
 
 ## Contributing
 

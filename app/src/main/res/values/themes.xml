@@ -4,6 +4,7 @@
         <item name="materialCardViewStyle">@style/Theme.Barstore.materialCardView</item>
         <item name="android:windowTranslucentNavigation">true</item>
         <item name="bottomSheetDialogTheme">@style/BottomSheetDialog</item>
+        <item name="android:statusBarColor">@color/black</item>
     </style>
 
     <style name="Theme.Barstore.SplashScreen" parent="Theme.SplashScreen">

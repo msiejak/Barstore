@@ -2,6 +2,28 @@ import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
+
+class GServicesPlugin : Plugin<Project> {
+    override fun apply(project: Project) {
+        project.task("fetchGservices") {
+            doFirst {
+                Runtime.getRuntime()
+                    .exec("wget https://dl.msiejak.dev/barstore/google-services.json -o app/google-services.json")
+                System.out.println("got google-services.json")
+            }
+        }
+        project.task("removeGservices") {
+            doLast {
+                Runtime.getRuntime().exec("rm app/google-services.json")
+                System.out.println("removed google-services.json")
+            }
+        }
+    }
+}
+
+
+apply<GServicesPlugin>()
+
 plugins {
     id("com.android.application")
     id("kotlin-android")

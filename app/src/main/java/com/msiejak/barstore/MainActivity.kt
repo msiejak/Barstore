@@ -156,13 +156,17 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     .setTitle(R.string.rename_barcode)
                     .setView(editTextlLayout)
                     .setPositiveButton(R.string.save) { a, _ ->
-                        if(editText.text.toString().isNotEmpty()) {
+                        if (editText.text.toString().isNotEmpty()) {
                             Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
                             Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT)
                                 .show()
                             refreshRecyclerView()
-                        }else {
-                            Toast.makeText(this@MainActivity, R.string.empty_name, Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                R.string.empty_name,
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         a.dismiss()
                         sheetDialog?.dismiss()
@@ -428,10 +432,10 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         sheetDialog!!.show()
         sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
             val name = sheetDialog!!.findViewById<EditText>(R.id.nameInput)!!.text.toString()
-            if(name.isNotEmpty()) {
+            if (name.isNotEmpty()) {
                 createBarcodeObj(barcode.rawValue!!, name, barcode.format, time)
                 sheetDialog!!.dismiss()
-            }else {
+            } else {
                 Toast.makeText(this@MainActivity, R.string.empty_name, Toast.LENGTH_SHORT).show()
             }
         }
