@@ -418,7 +418,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                         .show()
                     e.printStackTrace()
                 }
-                if (BuildConfig.DEBUG) {
+                if (BuildConfig.DEBUG || BuildConfig.BUILD_TYPE == "dogfood") {
                     saveImageToCache(image)
                 }
             }

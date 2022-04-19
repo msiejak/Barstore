@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 rootProject.name = "Barstore"
 include(":app")
 include("internal")
+include("nativetemplates")

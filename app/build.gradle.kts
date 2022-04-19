@@ -157,7 +157,11 @@ dependencies {
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
     implementation("androidx.core:core-splashscreen:1.0.0-beta02")
     implementation("androidx.browser:browser:1.4.0")
+    debugImplementation("com.google.android.gms:play-services-ads:20.6.0")
+    "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:20.6.0")
+    releaseImplementation("com.google.android.gms:play-services-ads-lite:20.6.0")
     debugImplementation(project(":internal"))
     "dogfoodImplementation"(project(":internal"))
+    implementation(project(":nativetemplates"))
 
 }
