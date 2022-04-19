@@ -152,6 +152,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 val editTextlLayout =
                     layoutInflater.inflate(R.layout.edittext, null) as TextInputLayout
                 val editText = editTextlLayout.findViewById<TextInputEditText>(R.id.nameInput)
+                editText.setText(Barcode.getName(this@MainActivity, index))
                 MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(R.string.rename_barcode)
                     .setView(editTextlLayout)

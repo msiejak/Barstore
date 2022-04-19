@@ -73,6 +73,11 @@ class Barcode(
             }
         }
 
+        fun getName(c: Context, i: Int): String {
+            val json = getJson(c)
+            return json.getJSONObject(i).get("name").toString()
+        }
+
         fun deleteBarcode(c: Context, index: Int) {
             val json = getJson(c)
             json.remove(index)
