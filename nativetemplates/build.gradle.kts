@@ -51,10 +51,10 @@ android {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.7.0-alpha01")
-    debugImplementation("com.google.android.gms:play-services-ads:20.6.0")
-    "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:20.6.0")
-    releaseImplementation("com.google.android.gms:play-services-ads-lite:20.6.0")
+    implementation("com.google.android.material:material:1.7.0-alpha02")
+    debugImplementation("com.google.android.gms:play-services-ads:21.0.0")
+    "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:21.0.0")
+    releaseImplementation("com.google.android.gms:play-services-ads-lite:21.0.0")
     implementation("androidx.core:core-ktx:1.7.0")
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.20")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.6.21")
 }
