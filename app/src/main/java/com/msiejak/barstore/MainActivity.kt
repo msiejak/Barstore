@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.ConcatAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.ads.nativetemplates.NativeTemplateStyle
+import com.google.android.ads.nativetemplates.TemplateView
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdLoader
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.nativead.NativeAd
+import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
@@ -345,9 +355,13 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun refreshRecyclerView() {
-        val rv = binding.recyclerView
+        val headerAdapter = HeaderAdapter()
         dataSet = Barcode.getJson(this@MainActivity)
-        rv.adapter = BarcodeAdapter(dataSet)
+        val barcodeAdapter = BarcodeAdapter(dataSet)
+        val concatAdapter = ConcatAdapter(headerAdapter, barcodeAdapter)
+        val rv = binding.recyclerView
+        rv.adapter = concatAdapter
+
         if (binding.recyclerView.adapter?.itemCount == 0) {
             binding.emptyContainer.visibility = View.VISIBLE
         } else {
@@ -471,29 +485,20 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         fun view(barcode: Barcode, position: Int)
     }
 
-    /**
-     * Provide a reference to the type of views that you are using
-     * (custom ViewHolder).
-     */
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.findViewById(R.id.name)
         val root: MaterialCardView = view.findViewById(R.id.root)
     }
 
-    // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
-        // Create a new view, which defines the UI of the list item
         val view = LayoutInflater.from(viewGroup.context)
             .inflate(R.layout.barcode_item, viewGroup, false)
 
         return ViewHolder(view)
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
-        // Get element from your dataset at this position and replace the
-        // contents of the view with that element
         val json: JSONArray = dataSet
         val jsonObj = json.getJSONObject(position)
         var time = "Unknown"
@@ -518,8 +523,63 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
         }
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     override fun getItemCount() = dataSet.length()
+
+}
+
+class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    private val v = view
+    private val c  = v.context
+    private var adLoaded = false
+    fun bind() {
+        if(!adLoaded) {
+            Log.e("bind() called", "bind: ",)
+            val parent = v.findViewById<MaterialCardView>(R.id.ad)
+            val loadingContainer = v.findViewById<FrameLayout>(R.id.ad_load)
+            val adLoader = AdLoader.Builder(c, BuildConfig.ADMOB_AD_ID)
+                .forNativeAd { nativeAd: NativeAd ->
+                    val styles = NativeTemplateStyle.Builder()
+                        .build()
+                    val template = v.findViewById<TemplateView>(R.id.my_template)
+                    template.setStyles(styles)
+                    template.visibility = View.VISIBLE
+                    loadingContainer.removeAllViews()
+                    template.setNativeAd(nativeAd)
+                    adLoaded = true
+                }
+                .withAdListener(
+                    object : AdListener() {
+                        override fun onAdFailedToLoad(adError: LoadAdError) {
+                            loadingContainer.removeAllViews()
+                            parent.visibility = View.GONE
+                        }
+                    })
+                .withNativeAdOptions(
+                    NativeAdOptions.Builder()
+                        .setRequestMultipleImages(false)
+                        .build()
+                )
+                .build()
+            adLoader.loadAd(AdRequest.Builder().build())
+        }
+    }
+}
+
+class HeaderAdapter: RecyclerView.Adapter<HeaderViewHolder>(){
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.native_ad, parent, false)
+        return HeaderViewHolder(view)
+    }
+
+
+    override fun getItemCount(): Int {
+        return 1
+    }
+
+    override fun onBindViewHolder(holder: HeaderViewHolder, position: Int) {
+        holder.bind()
+    }
 
 }
 
