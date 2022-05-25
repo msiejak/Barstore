@@ -154,6 +154,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             imageView?.setImageBitmap(bitmap)
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
                 Barcode.deleteBarcode(this@MainActivity, index)
+                sheetDialog?.hide()
                 sheetDialog?.dismiss()
                 Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
                 refreshRecyclerView()
@@ -362,7 +363,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         val rv = binding.recyclerView
         rv.adapter = concatAdapter
 
-        if (binding.recyclerView.adapter?.itemCount == 0) {
+        if (binding.recyclerView.adapter?.itemCount!! <= 1) {
             binding.emptyContainer.visibility = View.VISIBLE
         } else {
             binding.emptyContainer.visibility = View.GONE
