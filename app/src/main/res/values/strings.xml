@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Barstore</string>
     <string name="fab_content_desc">Add new barcode</string>
     <string name="enter_name">Almost done!\nEnter a name for the barcode below</string>
@@ -33,4 +33,7 @@
     <string name="build_time_title">Build time</string>
     <string name="dev_contact">Developer contact</string>
     <string name="viewSource">View GitHub</string>
+    <string name="wait_sb" tools:ignore="ExtraTranslation">Please wait a moment</string>
+    <string name="barcode_deleted">Barcode deleted</string>
+    <string name="barcode_renamed">Barcode renamed</string>
 </resources>

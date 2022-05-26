@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +35,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.mlkit.vision.barcode.BarcodeScannerOptions
@@ -157,7 +159,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 Barcode.deleteBarcode(this@MainActivity, index)
                 sheetDialog?.hide()
                 sheetDialog?.dismiss()
-                Toast.makeText(this@MainActivity, "Barcode deleted", Toast.LENGTH_SHORT).show()
+                Snackbar.make(binding.fab, R.string.barcode_deleted, Snackbar.LENGTH_SHORT).show()
                 refreshRecyclerView()
             }
             sheetDialog?.findViewById<MaterialButton>(R.id.edit)?.setOnClickListener {
@@ -171,8 +173,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     .setPositiveButton(R.string.save) { a, _ ->
                         if (editText.text.toString().isNotEmpty()) {
                             Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
-                            Toast.makeText(this@MainActivity, "Barcode renamed", Toast.LENGTH_SHORT)
-                                .show()
+                            Snackbar.make(binding.fab, R.string.barcode_renamed, Snackbar.LENGTH_SHORT).show()
                             refreshRecyclerView()
                         } else {
                             Toast.makeText(
@@ -395,7 +396,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             lifecycleScope.launch(Dispatchers.IO) {
                 image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
-            }.invokeOnCompletion { processImage(image!!) }
+            }.invokeOnCompletion {
+                Looper.prepare()
+                Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
+                processImage(image!!)
+            }
         }
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -445,6 +450,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
+        Looper.prepare()
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()
