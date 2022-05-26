@@ -363,6 +363,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         val concatAdapter = ConcatAdapter(headerAdapter, barcodeAdapter)
         val rv = binding.recyclerView
         rv.adapter = concatAdapter
+//        rv.adapter = barcodeAdapter // (used to disable ads)
 
         if (binding.recyclerView.adapter?.itemCount!! <= 1) {
             binding.emptyContainer.visibility = View.VISIBLE
