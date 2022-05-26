@@ -2,6 +2,7 @@ package com.msiejak.barstore
 
 import android.content.Context
 import androidx.annotation.Nullable
+import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.zxing.BarcodeFormat
 import org.json.JSONArray
 import org.json.JSONObject
@@ -42,24 +43,23 @@ class Barcode(
             writer.close()
         }
 
-        fun getBarcodeFormat(mlkitFormat: Int): BarcodeFormat {
-            when (mlkitFormat) {
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_AZTEC -> return BarcodeFormat.AZTEC
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODABAR -> return BarcodeFormat.CODABAR
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_128 -> return BarcodeFormat.CODE_128
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_39 -> return BarcodeFormat.CODE_39
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_CODE_93 -> return BarcodeFormat.CODE_93
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_DATA_MATRIX -> return BarcodeFormat.DATA_MATRIX
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_13 -> return BarcodeFormat.EAN_13
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_EAN_8 -> return BarcodeFormat.EAN_8
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_ITF -> return BarcodeFormat.ITF
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_QR_CODE -> return BarcodeFormat.QR_CODE
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_A -> return BarcodeFormat.UPC_A
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_UPC_E -> return BarcodeFormat.UPC_E
-                com.google.mlkit.vision.barcode.common.Barcode.FORMAT_PDF417 -> return BarcodeFormat.PDF_417
-                else -> return BarcodeFormat.UPC_A
-            }
-        }
+        private val barcodeFormatMapper = mapOf(
+            Barcode.FORMAT_AZTEC to BarcodeFormat.AZTEC,
+            Barcode.FORMAT_CODABAR to BarcodeFormat.CODABAR,
+            Barcode.FORMAT_CODE_128 to BarcodeFormat.CODE_128,
+            Barcode.FORMAT_CODE_39 to BarcodeFormat.CODE_39,
+            Barcode.FORMAT_CODE_93 to BarcodeFormat.CODE_93,
+            Barcode.FORMAT_DATA_MATRIX to BarcodeFormat.DATA_MATRIX,
+            Barcode.FORMAT_EAN_13 to BarcodeFormat.EAN_13,
+            Barcode.FORMAT_EAN_8 to BarcodeFormat.EAN_8,
+            Barcode.FORMAT_ITF to BarcodeFormat.ITF,
+            Barcode.FORMAT_QR_CODE to BarcodeFormat.QR_CODE,
+            Barcode.FORMAT_UPC_A to BarcodeFormat.UPC_A,
+            Barcode.FORMAT_UPC_E to BarcodeFormat.UPC_E,
+            Barcode.FORMAT_PDF417 to BarcodeFormat.PDF_417,
+        )
+        fun getBarcodeFormat(mlkitFormat: Int): BarcodeFormat =
+            barcodeFormatMapper[mlkitFormat] ?: BarcodeFormat.UPC_A
 
 
         fun getJson(c: Context): JSONArray {
