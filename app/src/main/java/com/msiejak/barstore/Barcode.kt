@@ -58,6 +58,7 @@ class Barcode(
             Barcode.FORMAT_UPC_E to BarcodeFormat.UPC_E,
             Barcode.FORMAT_PDF417 to BarcodeFormat.PDF_417,
         )
+
         fun getBarcodeFormat(mlkitFormat: Int): BarcodeFormat =
             barcodeFormatMapper[mlkitFormat] ?: BarcodeFormat.UPC_A
 

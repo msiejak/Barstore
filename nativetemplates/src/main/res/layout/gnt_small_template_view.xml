@@ -22,7 +22,7 @@
                     android:layout_height="100dp"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:maxWidth="110dp"/>
+                    android:maxWidth="110dp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"

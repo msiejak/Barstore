@@ -529,13 +529,13 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
 
 }
 
-class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view){
+class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val v = view
-    private val c  = v.context
+    private val c = v.context
     private var adLoaded = false
     fun bind() {
-        if(!adLoaded) {
-            Log.e("bind() called", "bind: ",)
+        if (!adLoaded) {
+            Log.e("bind() called", "bind: ")
             val parent = v.findViewById<MaterialCardView>(R.id.ad)
             val loadingContainer = v.findViewById<FrameLayout>(R.id.ad_load)
             val adLoader = AdLoader.Builder(c, BuildConfig.ADMOB_AD_ID)
@@ -567,7 +567,7 @@ class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view){
     }
 }
 
-class HeaderAdapter: RecyclerView.Adapter<HeaderViewHolder>(){
+class HeaderAdapter : RecyclerView.Adapter<HeaderViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HeaderViewHolder {
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.native_ad, parent, false)
