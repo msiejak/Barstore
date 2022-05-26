@@ -14,11 +14,11 @@
     <string name="empty_2">Scan a barcode to get started</string>
     <string name="empty_name">Please enter a valid name</string>
     <string name="clear_all">Clear all</string>
-    <string name="clear_all_confirmation">Are you sure that you want to clear all items?</string>
+    <string name="clear_all_confirmation">Are you sure that you want to clear <b>all items</b>?</string>
     <string name="new_barcode">New barcode</string>
     <string name="chose_input">Chose an input method</string>
     <string name="scan">Scan code</string>
-    <string name="chose_image">Chose image</string>
+    <string name="chose_image">Choose image</string>
     <string name="manual">Manual entry</string>
     <string name="changelog">Changelog</string>
     <string name="dbgm">Debug menu</string>
@@ -32,6 +32,5 @@
     <string name="version">App version</string>
     <string name="build_time_title">Build time</string>
     <string name="dev_contact">Developer contact</string>
-    <string name="error_loading">Error loading ad</string>
     <string name="viewSource">View GitHub</string>
 </resources>

@@ -77,6 +77,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         DynamicColors.applyIfAvailable(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        DynamicColors.applyIfAvailable(this)
         binding.fab.setOnClickListener {
             addBarcode()
         }
