@@ -24,14 +24,14 @@ fun getSystemUserName(): String {
 
 android {
     compileSdk = 32
-    buildToolsVersion = "32.0.0"
+    buildToolsVersion = "32.1.0-rc1"
     val subName = "1"
     val username = "-" + getSystemUserName()
     defaultConfig {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
         targetSdk = 32
-        versionCode = 5
+        versionCode = 6
         versionName = "1.0.0"
         resValue(
             "string",

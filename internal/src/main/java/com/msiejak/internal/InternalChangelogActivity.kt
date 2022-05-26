@@ -54,6 +54,11 @@ class InternalChangelogActivity : AppCompatActivity() {
                         .padding(bottom = 8.dp)
                 )
                 UpdateCard(
+                    releaseName = "1.0.0 Dogfood 2 (6)",
+                    body = "• Added an ad at the top of the list (the app is still open-source)\n• Fixed bugs\n• Updated dependencies\n • Added current name in EditText when changing the name of a barcode"
+
+                )
+                UpdateCard(
                     releaseName = "1.0.0 Dogfood 1 (4)",
                     body = "• Added settings\n• Moved around toolbar menu options\n• Added manual barcode entry (UPC-E and UPC-A only)\n• Made barcode text selectable\n• Added barcode name in sheet\n• Increased resolution of barcode images by 4X\n• Changed barcode image aspect ratio\n• Added max name length (21 characters)\n• Added the ability to change names\n" +
                             "• The screen will no longer fall asleep when viewing a barcode\n" +
