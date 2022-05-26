@@ -55,6 +55,10 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(i)
                     true
                 }
+                R.id.os -> {
+                    openUrl("https://github.com/msiejak/barstore")
+                    true
+                }
                 else -> {
                     false
                 }

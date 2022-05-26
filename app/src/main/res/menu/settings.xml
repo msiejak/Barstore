@@ -10,6 +10,9 @@
         android:id="@+id/appInfo"
         android:title="@string/app_info" />
     <item
+        android:id="@+id/os"
+        android:title="@string/viewSource" />
+    <item
         android:id="@+id/debugMenu"
         android:title="@string/dbgm"
         android:visible="@bool/isNotRelease" />

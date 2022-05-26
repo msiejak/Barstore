@@ -33,4 +33,5 @@
     <string name="build_time_title">Build time</string>
     <string name="dev_contact">Developer contact</string>
     <string name="error_loading">Error loading ad</string>
+    <string name="viewSource">View GitHub</string>
 </resources>
