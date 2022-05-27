@@ -371,6 +371,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         } else {
             binding.emptyContainer.visibility = View.GONE
         }
+        DynamicColors.applyIfAvailable(this)
     }
 
     private fun createBarcodeObj(
