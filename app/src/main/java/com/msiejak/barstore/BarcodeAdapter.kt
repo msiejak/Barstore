@@ -16,7 +16,6 @@ import com.google.android.gms.ads.LoadAdError
 import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.card.MaterialCardView
-import com.google.android.material.color.DynamicColors
 import org.json.JSONArray
 
 class BarcodeAdapter(private val dataSet: JSONArray) :
@@ -95,7 +94,7 @@ class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                         override fun onAdFailedToLoad(adError: LoadAdError) {
                             loadingContainer.removeAllViews()
                             parent.visibility = View.GONE
-                            Log.e(adError.toString(), "onAdFailedToLoad: ", )
+                            Log.e(adError.toString(), "onAdFailedToLoad: ")
                         }
                     })
                 .withNativeAdOptions(
@@ -105,7 +104,7 @@ class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                 )
                 .build()
             adLoader.loadAd(AdRequest.Builder().build())
-            Log.e("laoded ad", "bind: ", )
+            Log.e("laoded ad", "bind: ")
         }
     }
 }

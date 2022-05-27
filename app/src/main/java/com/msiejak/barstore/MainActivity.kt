@@ -10,29 +10,17 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.Looper
 import android.provider.MediaStore
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.ConcatAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.ads.nativetemplates.NativeTemplateStyle
-import com.google.android.ads.nativetemplates.TemplateView
-import com.google.android.gms.ads.AdListener
-import com.google.android.gms.ads.AdLoader
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.LoadAdError
-import com.google.android.gms.ads.nativead.NativeAd
-import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.card.MaterialCardView
 import com.google.android.material.color.DynamicColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
@@ -173,7 +161,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     .setPositiveButton(R.string.save) { a, _ ->
                         if (editText.text.toString().isNotEmpty()) {
                             Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
-                            Snackbar.make(binding.fab, R.string.barcode_renamed, Snackbar.LENGTH_SHORT).show()
+                            Snackbar.make(
+                                binding.fab,
+                                R.string.barcode_renamed,
+                                Snackbar.LENGTH_SHORT
+                            ).show()
                             refreshRecyclerView()
                         } else {
                             Toast.makeText(
@@ -358,12 +350,19 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun refreshRecyclerView() {
-        val headerAdapter = HeaderAdapter()
+
+        val rv = binding.recyclerView
         dataSet = Barcode.getJson(this@MainActivity)
         val barcodeAdapter = BarcodeAdapter(dataSet)
-        val concatAdapter = ConcatAdapter(headerAdapter, barcodeAdapter)
-        val rv = binding.recyclerView
-        rv.adapter = concatAdapter
+        if (dataSet.length() != 0) {
+            val headerAdapter = HeaderAdapter()
+            val concatAdapter = ConcatAdapter(headerAdapter, barcodeAdapter)
+            rv.adapter = concatAdapter
+            binding.toolbar.menu[2].isEnabled = true
+        } else {
+            rv.adapter = barcodeAdapter
+            binding.toolbar.menu[2].isEnabled = false
+        }
 //        rv.adapter = barcodeAdapter // (used to disable ads)
 
         if (binding.recyclerView.adapter?.itemCount!! <= 1) {
@@ -398,8 +397,9 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             lifecycleScope.launch(Dispatchers.IO) {
                 image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
             }.invokeOnCompletion {
-                Looper.prepare()
-                Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
+                runOnUiThread {
+                    Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
+                }
                 processImage(image!!)
             }
         }
@@ -451,7 +451,6 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
-        Looper.prepare()
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()

@@ -1,4 +1,5 @@
 <resources>
+
     <style name="Theme.Barstore" parent="Theme.Material3.Dark.NoActionBar">
         <item name="materialCardViewStyle">@style/Theme.Barstore.materialCardView</item>
         <item name="android:windowTranslucentNavigation">true</item>
@@ -29,8 +30,8 @@
         <item name="colorOutline">@color/md_theme_dark_outline</item>
         <item name="colorOnSurfaceInverse">@color/md_theme_dark_inverseOnSurface</item>
         <item name="colorSurfaceInverse">@color/md_theme_dark_inverseSurface</item>
-<!--        <item name="colorInversePrimary">@color/md_theme_dark_inversePrimary</item>-->
-<!--        <item name="colorShadow">@color/md_theme_dark_shadow</item>-->
+        <!--        <item name="colorInversePrimary">@color/md_theme_dark_inversePrimary</item>-->
+        <!--        <item name="colorShadow">@color/md_theme_dark_shadow</item>-->
         <item name="colorPrimaryInverse">@color/md_theme_dark_primaryInverse</item>
     </style>
 </resources>

@@ -31,7 +31,7 @@ android {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
         targetSdk = 32
-        versionCode = 6
+        versionCode = 7
         versionName = "1.0.0"
         resValue(
             "string",
