@@ -8,7 +8,6 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Looper
 import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager

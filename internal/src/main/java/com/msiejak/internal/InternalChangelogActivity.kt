@@ -54,6 +54,11 @@ class InternalChangelogActivity : AppCompatActivity() {
                         .padding(bottom = 8.dp)
                 )
                 UpdateCard(
+                    releaseName = "1.0.0 Dogfood 3 (7)",
+                    body = "• Removed ad when list is empty\n• Fixed bugs\n• Added data import ability in debug menu\n • Added a toast to let user know to wait a few seconds after scanning\n • Replaced some toasts with snackbars\n • Added in custom app theme\n • Added button to view github repo in settings\n • Disabled the 'clear all' menu option when the list is empty"
+
+                )
+                UpdateCard(
                     releaseName = "1.0.0 Dogfood 2 (6)",
                     body = "• Added an ad at the top of the list (the app is still open-source)\n• Fixed bugs\n• Updated dependencies\n • Added current name in EditText when changing the name of a barcode"
 

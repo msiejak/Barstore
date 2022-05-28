@@ -3,8 +3,6 @@ package com.msiejak.internal;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -13,23 +11,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.color.DynamicColors;
 
 import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStream;
-import java.util.Objects;
 
 public class ManualFlagOverride extends AppCompatActivity {
 
     private static final int CREATE_FILE = 1;
+    private static final int PICK_JSON_FILE = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +67,6 @@ public class ManualFlagOverride extends AppCompatActivity {
         startActivityForResult(intent, CREATE_FILE);
     }
 
-    private static final int PICK_JSON_FILE = 2;
-
     private void importData() {
         Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
@@ -104,7 +96,7 @@ public class ManualFlagOverride extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else if(requestCode == PICK_JSON_FILE && resultCode == RESULT_OK) {
+        } else if (requestCode == PICK_JSON_FILE && resultCode == RESULT_OK) {
             try {
                 FileOutputStream fos = openFileOutput("barcodes.json", MODE_PRIVATE);
                 InputStream is = getIsFromUri(data.getData());
