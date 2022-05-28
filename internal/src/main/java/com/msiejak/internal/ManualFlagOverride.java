@@ -3,6 +3,8 @@ package com.msiejak.internal;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -11,13 +13,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.material.color.DynamicColors;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.util.Objects;
 
 public class ManualFlagOverride extends AppCompatActivity {
 
@@ -28,6 +36,8 @@ public class ManualFlagOverride extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         DynamicColors.applyIfAvailable(this);
         setContentView(com.msiejak.internal.R.layout.activity_manual_flag_override);
+
+        findViewById(R.id.importData).setOnClickListener(v -> importData());
 
         findViewById(R.id.dummyData).setOnClickListener(v -> {
             try {
@@ -63,6 +73,16 @@ public class ManualFlagOverride extends AppCompatActivity {
         startActivityForResult(intent, CREATE_FILE);
     }
 
+    private static final int PICK_JSON_FILE = 2;
+
+    private void importData() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("application/json");
+        startActivityForResult(intent, PICK_JSON_FILE);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -70,9 +90,8 @@ public class ManualFlagOverride extends AppCompatActivity {
             try {
                 File source = new File(getFilesDir(), "barcodes.json");
                 Uri uri = data.getData();
-                InputStream is;
+                InputStream is = new FileInputStream(source);
                 OutputStream os;
-                is = new FileInputStream(source);
                 os = getContentResolver().openOutputStream(uri);
                 byte[] buffer = new byte[1024];
                 int length;
@@ -85,8 +104,30 @@ public class ManualFlagOverride extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }else if(requestCode == PICK_JSON_FILE && resultCode == RESULT_OK) {
+            try {
+                FileOutputStream fos = openFileOutput("barcodes.json", MODE_PRIVATE);
+                InputStream is = getIsFromUri(data.getData());
+                byte[] buf = new byte[8192];
+                int length;
+                while ((length = is.read(buf)) > 0) {
+                    fos.write(buf, 0, length);
+                }
+                is.close();
+                fos.close();
+                Toast.makeText(this, "Data imported", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    private InputStream getIsFromUri(Uri uri) throws IOException {
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+        return inputStream;
+    }
+
+
 }
 
 

@@ -4,5 +4,8 @@
     <string name="overwrite">Overwrite</string>
     <string name="pull_data">Export data</string>
     <string name="push_data">Import data</string>
-    <string name="warning">After making changes, you may have to kill the app</string>
+    <string name="pull_data_des">Export data as JSON file</string>
+    <string name="push_data_des">Import data form JSON file</string>
+    <string name="warning">After making changes here, you may have to kill the app</string>
+    <string name="import_warn">Warning: importing a modified file may cause issues with the app</string>
 </resources>

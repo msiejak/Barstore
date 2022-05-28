@@ -6,8 +6,10 @@
     android:padding="12dp">
 
     <TextView
+        android:textColor="?attr/colorError"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_marginBottom="22dp"
         android:text="@string/warning" />
 
@@ -25,13 +27,30 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/pull_data" />
+        android:text="@string/pull_data_des" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/exportData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/pull_data" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/push_data_des" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="?attr/colorError"
+        android:text="@string/import_warn" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/importData"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/push_data" />
 
     <!--    <TextView-->
     <!--        android:layout_width="match_parent"-->
