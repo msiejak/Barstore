@@ -88,16 +88,29 @@ android {
                 "version_name",
                 defaultConfig.versionName + versionNameSuffix + username
             )
+//            buildConfigField(
+//                "String",
+//                "ADMOB_AD_ID",
+//                "\"ca-app-pub-3940256099942544/2247696110\""
+//            )
+//            resValue(
+//                "string",
+//                "admob_app_id",
+//                "\"ca-app-pub-3940256099942544~3347511713\""
+//            )
+
             buildConfigField(
                 "String",
                 "ADMOB_AD_ID",
-                "\"ca-app-pub-3940256099942544/2247696110\""
+                "${gradleLocalProperties(rootDir).getProperty("admob.ad_id")}"
             )
             resValue(
                 "string",
                 "admob_app_id",
-                "\"ca-app-pub-3940256099942544~3347511713\""
+                "${gradleLocalProperties(rootDir).getProperty("admob.app_id")}"
             )
+
+
         }
         create("dogfood") {
             resValue(

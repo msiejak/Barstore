@@ -86,6 +86,7 @@ class HeaderViewHolder(view: View) : RecyclerView.ViewHolder(view) {
                     template.setStyles(styles)
                     template.visibility = View.VISIBLE
                     loadingContainer.removeAllViews()
+                    parent.removeView(loadingContainer)
                     template.setNativeAd(nativeAd)
                     adLoaded = true
                 }
