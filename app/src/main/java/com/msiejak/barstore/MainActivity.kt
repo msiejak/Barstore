@@ -396,9 +396,9 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             lifecycleScope.launch(Dispatchers.IO) {
                 image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
             }.invokeOnCompletion {
-                runOnUiThread {
-                    Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
-                }
+//                runOnUiThread {
+//                    Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
+//                }
                 processImage(image!!)
             }
         }

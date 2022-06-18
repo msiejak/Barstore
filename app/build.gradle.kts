@@ -13,7 +13,7 @@ plugins {
 }
 
 fun buildTime(): String {
-    val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy_HH:mm:ss")
+    val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy|HH:mm:ss")
     val now = LocalDateTime.now()
     return dtf.format(now)
 }
@@ -23,16 +23,16 @@ fun getSystemUserName(): String {
 }
 
 android {
-    compileSdk = 32
-    buildToolsVersion = "32.1.0-rc1"
-    val subName = "3"
+    compileSdk = 33
+    buildToolsVersion = "33.0.0"
+    val subName = "beta"
     val username = "-" + getSystemUserName()
     defaultConfig {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
-        targetSdk = 32
-        versionCode = 7
-        versionName = "1.0.0"
+        targetSdk = 33
+        versionCode = 11
+        versionName = "1.0.1"
         resValue(
             "string",
             "build_time",
@@ -51,6 +51,7 @@ android {
                 "isNotRelease",
                 "false"
             )
+            versionNameSuffix = "-$subName"
             isMinifyEnabled = true
             isShrinkResources = true
             proguardFiles(
@@ -88,26 +89,15 @@ android {
                 "version_name",
                 defaultConfig.versionName + versionNameSuffix + username
             )
-//            buildConfigField(
-//                "String",
-//                "ADMOB_AD_ID",
-//                "\"ca-app-pub-3940256099942544/2247696110\""
-//            )
-//            resValue(
-//                "string",
-//                "admob_app_id",
-//                "\"ca-app-pub-3940256099942544~3347511713\""
-//            )
-
             buildConfigField(
                 "String",
                 "ADMOB_AD_ID",
-                "${gradleLocalProperties(rootDir).getProperty("admob.ad_id")}"
+                "\"ca-app-pub-3940256099942544/2247696110\""
             )
             resValue(
                 "string",
                 "admob_app_id",
-                "${gradleLocalProperties(rootDir).getProperty("admob.app_id")}"
+                "\"ca-app-pub-3940256099942544~3347511713\""
             )
 
 
@@ -156,8 +146,8 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.7.0")
-    implementation("androidx.appcompat:appcompat:1.4.1")
+    implementation("androidx.core:core-ktx:1.8.0")
+    implementation("androidx.appcompat:appcompat:1.4.2")
     implementation("com.google.android.material:material:1.7.0-alpha02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.mlkit:barcode-scanning:17.0.2")
