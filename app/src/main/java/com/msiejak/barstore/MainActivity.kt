@@ -4,9 +4,7 @@ import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.Color
+import android.graphics.*
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
@@ -117,6 +115,26 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
 
+    fun getRoundedCornerBitmap(bitmap: Bitmap): Bitmap? {
+        val output = Bitmap.createBitmap(
+            bitmap.width,
+            bitmap.height, Bitmap.Config.ARGB_8888
+        )
+        val canvas = Canvas(output)
+        val color = -0xbdbdbe
+        val paint = Paint()
+        val rect = Rect(0, 0, bitmap.width, bitmap.height)
+        val rectF = RectF(rect)
+        val roundPx = 16f
+        paint.setAntiAlias(true)
+        canvas.drawARGB(0, 0, 0, 0)
+        paint.setColor(color)
+        canvas.drawRoundRect(rectF, roundPx, roundPx, paint)
+        paint.setXfermode(PorterDuffXfermode(PorterDuff.Mode.SRC_IN))
+        canvas.drawBitmap(bitmap, rect, rect, paint)
+        return output
+    }
+
     private fun viewBarcode(barcode: Barcode, index: Int) {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
@@ -141,7 +159,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     bitmap.setPixel(i, j, if (bitMatrix.get(i, j)) Color.BLACK else Color.WHITE)
                 }
             }
-            imageView?.setImageBitmap(bitmap)
+            imageView?.setImageBitmap(getRoundedCornerBitmap(bitmap))
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
                 Barcode.deleteBarcode(this@MainActivity, index)
                 sheetDialog?.hide()
