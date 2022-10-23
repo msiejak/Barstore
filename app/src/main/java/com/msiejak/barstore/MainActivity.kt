@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         val paint = Paint()
         val rect = Rect(0, 0, bitmap.width, bitmap.height)
         val rectF = RectF(rect)
-        val roundPx = 16f
+        val roundPx = 28f
         paint.setAntiAlias(true)
         canvas.drawARGB(0, 0, 0, 0)
         paint.setColor(color)
