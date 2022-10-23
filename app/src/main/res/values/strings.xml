@@ -36,4 +36,6 @@
     <string name="wait_sb" tools:ignore="ExtraTranslation">Please wait a moment</string>
     <string name="barcode_deleted">Barcode deleted</string>
     <string name="barcode_renamed">Barcode renamed</string>
+    <string name="new_item_placement">Reverse list order</string>
+    <string name="general">General</string>
 </resources>

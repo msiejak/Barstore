@@ -4,6 +4,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings
+import android.widget.CompoundButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -64,6 +65,7 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         }
+        setOrderSwitch()
         binding.devContact.setOnClickListener {
             openUrl("mailto:contact@msiejak.dev")
         }
@@ -74,5 +76,23 @@ class SettingsActivity : AppCompatActivity() {
         val builder = CustomTabsIntent.Builder()
         val customTabsIntent = builder.build()
         customTabsIntent.launchUrl(this, Uri.parse(url))
+    }
+
+    private fun setOrderSwitch() {
+        val switch = binding.order
+        switch.isChecked = getOrderPref()
+        switch.setOnCheckedChangeListener { _: CompoundButton, _: Boolean ->
+            setOrderPref(!getOrderPref())
+        }
+    }
+
+    private fun getOrderPref() : Boolean {
+        return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("order", false)
+    }
+
+    private fun setOrderPref(value: Boolean) : Boolean {
+        val prefs = getSharedPreferences("prefs", MODE_PRIVATE).edit()
+        prefs.putBoolean("order", value).apply()
+        return value
     }
 }

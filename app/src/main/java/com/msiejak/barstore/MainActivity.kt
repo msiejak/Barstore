@@ -115,7 +115,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         window.addFlags(WindowManager.LayoutParams.FLAGS_CHANGED)
     }
 
-    fun getRoundedCornerBitmap(bitmap: Bitmap): Bitmap? {
+    private fun getRoundedCornerBitmap(bitmap: Bitmap): Bitmap? {
         val output = Bitmap.createBitmap(
             bitmap.width,
             bitmap.height, Bitmap.Config.ARGB_8888
@@ -388,6 +388,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             binding.emptyContainer.visibility = View.GONE
         }
         DynamicColors.applyIfAvailable(this)
+    }
+
+    override fun onResume() {
+        refreshRecyclerView()
+        super.onResume()
     }
 
     private fun createBarcodeObj(

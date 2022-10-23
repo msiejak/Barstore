@@ -1,5 +1,7 @@
 package com.msiejak.barstore
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +19,7 @@ import com.google.android.gms.ads.nativead.NativeAd
 import com.google.android.gms.ads.nativead.NativeAdOptions
 import com.google.android.material.card.MaterialCardView
 import org.json.JSONArray
+import org.json.JSONObject
 
 class BarcodeAdapter(private val dataSet: JSONArray) :
     RecyclerView.Adapter<BarcodeAdapter.ViewHolder>() {
@@ -42,7 +45,12 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
     override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
 
         val json: JSONArray = dataSet
-        val jsonObj = json.getJSONObject(position)
+        val jsonObj: JSONObject =
+            if(viewHolder.root.context.getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("order", false)) {
+            json.getJSONObject(json.length() - (position + 1))
+        }else {
+            json.getJSONObject(position)
+        }
         var time = "Unknown"
         try {
             time = jsonObj.get("time").toString()
