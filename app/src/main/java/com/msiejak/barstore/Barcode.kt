@@ -13,8 +13,8 @@ import java.io.FileWriter
 class Barcode(
     barcodeString: String,
     barcodeType: Int,
-    @Nullable name: String?,
-    @Nullable time: String?
+    name: String?,
+    time: String?
 ) {
     var barcodeString: String = "0"
     var name: String = "Unnamed"

@@ -135,7 +135,16 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         return output
     }
 
+    private fun isOrderReversed() : Boolean {
+        return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("order", false)
+    }
+
     private fun viewBarcode(barcode: Barcode, index: Int) {
+        val trueIndex = if(isOrderReversed()) {
+            dataSet.length() - index - 1
+        }else {
+            index
+        }
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
@@ -161,7 +170,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
             }
             imageView?.setImageBitmap(getRoundedCornerBitmap(bitmap))
             sheetDialog?.findViewById<MaterialButton>(R.id.delete)?.setOnClickListener {
-                Barcode.deleteBarcode(this@MainActivity, index)
+                Barcode.deleteBarcode(this@MainActivity, trueIndex)
                 sheetDialog?.hide()
                 sheetDialog?.dismiss()
                 Snackbar.make(binding.fab, R.string.barcode_deleted, Snackbar.LENGTH_SHORT).show()
@@ -171,13 +180,13 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 val editTextlLayout =
                     layoutInflater.inflate(R.layout.edittext, null) as TextInputLayout
                 val editText = editTextlLayout.findViewById<TextInputEditText>(R.id.nameInput)
-                editText.setText(Barcode.getName(this@MainActivity, index))
+                editText.setText(Barcode.getName(this@MainActivity, trueIndex))
                 MaterialAlertDialogBuilder(this@MainActivity)
                     .setTitle(R.string.rename_barcode)
                     .setView(editTextlLayout)
                     .setPositiveButton(R.string.save) { a, _ ->
                         if (editText.text.toString().isNotEmpty()) {
-                            Barcode.nameBarcode(this@MainActivity, index, editText.text.toString())
+                            Barcode.nameBarcode(this@MainActivity, trueIndex, editText.text.toString())
                             Snackbar.make(
                                 binding.fab,
                                 R.string.barcode_renamed,
