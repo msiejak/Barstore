@@ -5,13 +5,17 @@ import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.*
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager
 import android.widget.*
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
+import androidx.core.net.toFile
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
@@ -51,10 +55,22 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         const val BRIGHTNESS_MAX = 1F
         const val KEEP_SCREEN_ON = WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
         const val REQUEST_IMAGE_CAPTURE = 1
-        const val PICK_IMAGE = 4
         const val CODE_UPC_A = 0
         const val CODE_UPC_E = 1
         const val CODE_INVALID = -1
+    }
+
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            var image: Bitmap? = null
+            lifecycleScope.launch {
+                image = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+            }.invokeOnCompletion {
+                processImage(image!!)
+            }
+        } else {
+            Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT).show()
+        }
     }
 
 
@@ -348,13 +364,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun choseBarcode() {
-        val intent = Intent(
-            Intent.ACTION_PICK,
-            MediaStore.Images.Media.INTERNAL_CONTENT_URI
-        )
-        intent.type = "image/*"
-        intent.putExtra("return-data", true)
-        startActivityForResult(intent, PICK_IMAGE)
+        pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun scanBarcode() {
@@ -424,25 +434,16 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+       super.onActivityResult(requestCode, resultCode, data)
         var image: Bitmap? = null
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             lifecycleScope.launch(Dispatchers.IO) {
                 image = BitmapFactory.decodeFile(File(cacheDir, "image.png").path)
             }.invokeOnCompletion {
-//                runOnUiThread {
-//                    Toast.makeText(this@MainActivity, R.string.wait_sb, Toast.LENGTH_LONG).show()
-//                }
                 processImage(image!!)
             }
         }
-        if (requestCode == PICK_IMAGE && resultCode == RESULT_OK) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val d = data?.data
-                image = MediaStore.Images.Media.getBitmap(contentResolver, d)
-            }.invokeOnCompletion { processImage(image!!) }
-        }
-    }
+   }
 
     private fun processImage(image: Bitmap) {
         val bitmap = InputImage.fromBitmap(image, 0)
