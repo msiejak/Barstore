@@ -148,7 +148,9 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
-        setWinBrightness(BRIGHTNESS_MAX)
+        if(getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("increaseBrightness", true)) {
+            setWinBrightness(BRIGHTNESS_MAX)
+        }
         val imageView: ImageView? = sheetDialog!!.findViewById(R.id.image)
         val multiFormatWriter = MultiFormatWriter()
         try {

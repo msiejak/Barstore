@@ -148,7 +148,7 @@ android {
 dependencies {
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.8.0-alpha01")
+    implementation("com.google.android.material:material:1.8.0-alpha02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("com.google.mlkit:barcode-scanning:17.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")

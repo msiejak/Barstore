@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.Barstore.materialCardView" parent="Widget.Material3.CardView.Elevated"></style>
+    <style name="Theme.Barstore.materialCardView" parent="Widget.Material3.CardView.Elevated" />
 
     <style name="Theme.Barstore.materialCardView.sheet" parent="Widget.Material3.CardView.Elevated">
         <item name="shapeAppearanceOverlay">@style/Theme.Barstore.shapeLarge</item>

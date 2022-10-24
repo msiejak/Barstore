@@ -66,6 +66,7 @@ class SettingsActivity : AppCompatActivity() {
             }
         }
         setOrderSwitch()
+        setBrightnessSwitch()
         binding.devContact.setOnClickListener {
             openUrl("mailto:contact@msiejak.dev")
         }
@@ -80,19 +81,27 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun setOrderSwitch() {
         val switch = binding.order
-        switch.isChecked = getOrderPref()
+        switch.isChecked = getPref("order", false)
         switch.setOnCheckedChangeListener { _: CompoundButton, _: Boolean ->
-            setOrderPref(!getOrderPref())
+            setPref("order", !getPref("order", false))
         }
     }
 
-    private fun getOrderPref() : Boolean {
-        return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("order", false)
+    private fun setBrightnessSwitch() {
+        val switch = binding.brightness
+        switch.isChecked = getPref("increaseBrightness", true)
+        switch.setOnCheckedChangeListener { _: CompoundButton, _: Boolean ->
+            setPref("increaseBrightness", !getPref("increaseBrightness", false))
+        }
     }
 
-    private fun setOrderPref(value: Boolean) : Boolean {
+    private fun getPref(key: String, defValue: Boolean) : Boolean {
+        return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean(key, defValue)
+    }
+
+    private fun setPref(key: String, value: Boolean) : Boolean {
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE).edit()
-        prefs.putBoolean("order", value).apply()
+        prefs.putBoolean(key, value).apply()
         return value
     }
 }
