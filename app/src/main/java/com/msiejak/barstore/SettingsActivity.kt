@@ -36,6 +36,7 @@ class SettingsActivity : AppCompatActivity() {
                     )
                     true
                 }
+
                 R.id.debugMenu -> {
                     startActivity(
                         Intent(
@@ -45,10 +46,12 @@ class SettingsActivity : AppCompatActivity() {
                     )
                     true
                 }
+
                 R.id.changelog -> {
                     openUrl("https://msiejak.dev/barstore/changelog")
                     true
                 }
+
                 R.id.appInfo -> {
                     val i = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     i.addCategory(Intent.CATEGORY_DEFAULT)
@@ -56,10 +59,12 @@ class SettingsActivity : AppCompatActivity() {
                     startActivity(i)
                     true
                 }
+
                 R.id.os -> {
                     openUrl("https://github.com/msiejak/barstore")
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -95,11 +100,11 @@ class SettingsActivity : AppCompatActivity() {
         }
     }
 
-    private fun getPref(key: String, defValue: Boolean) : Boolean {
+    private fun getPref(key: String, defValue: Boolean): Boolean {
         return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean(key, defValue)
     }
 
-    private fun setPref(key: String, value: Boolean) : Boolean {
+    private fun setPref(key: String, value: Boolean): Boolean {
         val prefs = getSharedPreferences("prefs", MODE_PRIVATE).edit()
         prefs.putBoolean(key, value).apply()
         return value

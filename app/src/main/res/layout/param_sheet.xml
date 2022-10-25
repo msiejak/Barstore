@@ -53,9 +53,9 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit"
-            android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:text="@string/submit" />
 
     </androidx.appcompat.widget.LinearLayoutCompat>

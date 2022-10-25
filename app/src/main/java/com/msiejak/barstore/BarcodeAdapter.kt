@@ -1,7 +1,6 @@
 package com.msiejak.barstore
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -46,11 +45,13 @@ class BarcodeAdapter(private val dataSet: JSONArray) :
 
         val json: JSONArray = dataSet
         val jsonObj: JSONObject =
-            if(viewHolder.root.context.getSharedPreferences("prefs", Context.MODE_PRIVATE).getBoolean("order", false)) {
-            json.getJSONObject(json.length() - (position + 1))
-        }else {
-            json.getJSONObject(position)
-        }
+            if (viewHolder.root.context.getSharedPreferences("prefs", Context.MODE_PRIVATE)
+                    .getBoolean("order", false)
+            ) {
+                json.getJSONObject(json.length() - (position + 1))
+            } else {
+                json.getJSONObject(position)
+            }
         var time = "Unknown"
         try {
             time = jsonObj.get("time").toString()

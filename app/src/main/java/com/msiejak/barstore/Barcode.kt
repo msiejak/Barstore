@@ -1,7 +1,6 @@
 package com.msiejak.barstore
 
 import android.content.Context
-import androidx.annotation.Nullable
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.zxing.BarcodeFormat
 import org.json.JSONArray

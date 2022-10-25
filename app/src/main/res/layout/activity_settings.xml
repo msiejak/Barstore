@@ -66,8 +66,8 @@
                     android:text="@string/increaseBrightness" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:layout_width="wrap_content"
                     android:id="@+id/brightness"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 
@@ -84,8 +84,8 @@
                     android:text="@string/new_item_placement" />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
-                    android:layout_width="wrap_content"
                     android:id="@+id/order"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
             </LinearLayout>
 

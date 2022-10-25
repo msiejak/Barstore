@@ -4,18 +4,28 @@ import android.app.SearchManager
 import android.content.ActivityNotFoundException
 import android.content.Intent
 import android.content.SharedPreferences
-import android.graphics.*
-import android.net.Uri
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.RectF
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.View
 import android.view.WindowManager
-import android.widget.*
+import android.widget.Button
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.FileProvider
-import androidx.core.net.toFile
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.get
 import androidx.lifecycle.lifecycleScope
@@ -61,18 +71,19 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         const val CODE_INVALID = -1
     }
 
-    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
-        if (uri != null) {
-            var image: Bitmap? = null
-            lifecycleScope.launch {
-                image = MediaStore.Images.Media.getBitmap(contentResolver, uri);
-            }.invokeOnCompletion {
-                processImage(image!!)
+    private val pickMedia =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+            if (uri != null) {
+                var image: Bitmap? = null
+                lifecycleScope.launch {
+                    image = MediaStore.Images.Media.getBitmap(contentResolver, uri);
+                }.invokeOnCompletion {
+                    processImage(image!!)
+                }
+            } else {
+                Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT).show()
             }
-        } else {
-            Toast.makeText(this, "Please try again", Toast.LENGTH_SHORT).show()
         }
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -100,6 +111,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                         .show()
                     true
                 }
+
                 R.id.internalChangelog -> {
                     startActivity(
                         Intent(
@@ -109,6 +121,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     )
                     true
                 }
+
                 R.id.settings -> {
                     startActivity(
                         Intent(
@@ -118,6 +131,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     )
                     true
                 }
+
                 else -> {
                     false
                 }
@@ -152,20 +166,20 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         return output
     }
 
-    private fun isOrderReversed() : Boolean {
+    private fun isOrderReversed(): Boolean {
         return getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("order", false)
     }
 
     private fun viewBarcode(barcode: Barcode, index: Int) {
-        val trueIndex = if(isOrderReversed()) {
+        val trueIndex = if (isOrderReversed()) {
             dataSet.length() - index - 1
-        }else {
+        } else {
             index
         }
         sheetDialog = BottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
-        if(getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("increaseBrightness", true)) {
+        if (getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("increaseBrightness", true)) {
             setWinBrightness(BRIGHTNESS_MAX)
         }
         val imageView: ImageView? = sheetDialog!!.findViewById(R.id.image)
@@ -205,7 +219,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     .setView(editTextlLayout)
                     .setPositiveButton(R.string.save) { a, _ ->
                         if (editText.text.toString().isNotEmpty()) {
-                            Barcode.nameBarcode(this@MainActivity, trueIndex, editText.text.toString())
+                            Barcode.nameBarcode(
+                                this@MainActivity,
+                                trueIndex,
+                                editText.text.toString()
+                            )
                             Snackbar.make(
                                 binding.fab,
                                 R.string.barcode_renamed,
@@ -346,6 +364,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     sheetDialog!!.dismiss()
                     refreshRecyclerView()
                 }
+
                 CODE_UPC_E -> {
                     barcode = Barcode(
                         data,
@@ -357,6 +376,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                     sheetDialog!!.dismiss()
                     refreshRecyclerView()
                 }
+
                 CODE_INVALID -> {
                     Toast.makeText(this@MainActivity, "Invalid barcode", Toast.LENGTH_SHORT).show()
                 }
@@ -431,7 +451,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     private fun getCurrTime(): String {
         val dtf = if (Locale.getDefault().country == "US" || Locale.getDefault().country == "CA") {
             DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
-        }else {
+        } else {
             DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
         }
         val now = LocalDateTime.now()
@@ -439,7 +459,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-       super.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
         var image: Bitmap? = null
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
             lifecycleScope.launch(Dispatchers.IO) {
@@ -448,7 +468,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
                 processImage(image!!)
             }
         }
-   }
+    }
 
     private fun processImage(image: Bitmap) {
         val bitmap = InputImage.fromBitmap(image, 0)
