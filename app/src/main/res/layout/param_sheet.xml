@@ -17,7 +17,7 @@
             style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
+
             android:layout_marginHorizontal="12dp"
             android:text="@string/enter_name" />
 
@@ -53,6 +53,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/submit"
+            android:layout_gravity="right"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/submit" />
