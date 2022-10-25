@@ -42,6 +42,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
@@ -428,7 +429,11 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun getCurrTime(): String {
-        val dtf = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
+        val dtf = if (Locale.getDefault().country == "US" || Locale.getDefault().country == "CA") {
+            DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm")
+        }else {
+            DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm")
+        }
         val now = LocalDateTime.now()
         return dtf.format(now)
     }
