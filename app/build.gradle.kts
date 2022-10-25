@@ -31,8 +31,8 @@ android {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
         targetSdk = 33
-        versionCode = 11
-        versionName = "1.0.1"
+        versionCode = 12
+        versionName = "1.1.0"
         resValue(
             "string",
             "build_time",
@@ -153,8 +153,8 @@ dependencies {
     implementation("com.google.mlkit:barcode-scanning:17.0.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("com.google.zxing:core:3.4.1")
-    implementation(platform("com.google.firebase:firebase-bom:30.0.2"))
+    implementation("com.google.zxing:core:3.5.0")
+    implementation(platform("com.google.firebase:firebase-bom:31.0.1"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
     implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
