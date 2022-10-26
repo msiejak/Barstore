@@ -22,6 +22,6 @@
     </style>
 
     <style name="BottomSheet" parent="Widget.Material3.BottomSheet.Modal">
-        <item name="backgroundTint">@android:color/transparent</item>
+        <item name="backgroundTint">?attr/colorSurface</item>
     </style>
 </resources>

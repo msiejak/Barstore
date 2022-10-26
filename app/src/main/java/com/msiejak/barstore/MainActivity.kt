@@ -57,7 +57,7 @@ import java.util.Locale
 
 class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     private lateinit var binding: ActivityMainBinding
-    private var sheetDialog: BottomSheetDialog? = null
+    private var sheetDialog: ColoredBottomSheetDialog? = null
     private lateinit var dataSet: JSONArray
     private var prefs: SharedPreferences? = null
 
@@ -176,7 +176,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
         } else {
             index
         }
-        sheetDialog = BottomSheetDialog(this)
+        sheetDialog = ColoredBottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.code_sheet)
         sheetDialog!!.show()
         if (getSharedPreferences("prefs", MODE_PRIVATE).getBoolean("increaseBrightness", true)) {
@@ -341,7 +341,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun enterBarcode() {
-        sheetDialog = BottomSheetDialog(this)
+        sheetDialog = ColoredBottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.findViewById<View>(R.id.textFieldCode)?.visibility = View.VISIBLE
         sheetDialog!!.findViewById<TextView>(R.id.message)?.text = getString(R.string.enter_barcode)
@@ -510,7 +510,7 @@ class MainActivity : AppCompatActivity(), BarcodeAdapter.ViewBarcode {
     }
 
     private fun getName(barcode: com.google.mlkit.vision.barcode.common.Barcode, time: String) {
-        sheetDialog = BottomSheetDialog(this)
+        sheetDialog = ColoredBottomSheetDialog(this)
         sheetDialog!!.setContentView(R.layout.param_sheet)
         sheetDialog!!.show()
         sheetDialog!!.findViewById<Button>(R.id.submit)?.setOnClickListener {
