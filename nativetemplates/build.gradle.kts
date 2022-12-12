@@ -51,7 +51,7 @@ android {
 
 dependencies {
     implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.8.0-alpha02")
+    implementation("com.google.android.material:material:1.8.0-beta01")
     debugImplementation("com.google.android.gms:play-services-ads:21.3.0")
     "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:21.3.0")
     releaseImplementation("com.google.android.gms:play-services-ads-lite:21.3.0")
