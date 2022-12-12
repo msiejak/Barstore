@@ -1,4 +1,4 @@
-# Barstore
+# My barcodes
 
 (name is still open for suggestions)
 
