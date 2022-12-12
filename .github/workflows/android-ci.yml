@@ -22,16 +22,16 @@ jobs:
           java-version: '11'
           distribution: 'adopt'
       - name: Grant execute permission for gradlew
-        working-directory: ./Barstore
+        working-directory: ./
         run: chmod +x gradlew
       - name: Build with Gradle
-        working-directory: ./Barstore
+        working-directory: ./
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
           name: app-debug
-          path: ./Barstore/app/build/outputs/apk/debug/app-debug.apk
+          path: ./app/build/outputs/apk/debug/app-debug.apk
       - name: Clean build files
-        working-directory: ./Barstore
+        working-directory: ./
         run: bash ./gradlew clean
