@@ -1,10 +1,9 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="../../../../../../layout/custom_preview.xml" value="0.12050359712230216" />
-        <entry key="app/src/main/res/layout/activity_main.xml" value="0.15896739130434784" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.17350557244174267" />
         <entry key="app/src/main/res/layout/barcode_item.xml" value="0.15896739130434784" />
         <entry key="app/src/main/res/layout/code_sheet.xml" value="0.15896739130434784" />
@@ -15,6 +14,7 @@
         <entry key="app/src/main/res/menu/main.xml" value="0.1796875" />
         <entry key="app/src/main/res/menu/settings.xml" value="0.1" />
         <entry key="app/src/main/res/xml/prefs.xml" value="0.17350557244174267" />
+        <entry key="internal/src/main/res/layout/activity_manual_flag_override.xml" value="0.22604166666666667" />
         <entry key="internal/src/main/res/layout/compose_root.xml" value="0.18333333333333332" />
         <entry key="nativetemplates/src/main/res/drawable/gnt_button_standard.xml" value="0.1" />
         <entry key="nativetemplates/src/main/res/drawable/gnt_outline_shape.xml" value="0.1" />
@@ -24,5 +24,5 @@
     </option>
   </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK" />
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_17" default="true" project-jdk-name="jbr-17" project-jdk-type="JavaSDK" />
 </project>

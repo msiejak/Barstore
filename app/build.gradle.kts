@@ -23,14 +23,14 @@ fun getSystemUserName(): String {
 }
 
 android {
-    compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
     val subName = "beta"
     val username = "-" + getSystemUserName()
     defaultConfig {
         applicationId = "com.msiejak.barstore"
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
         versionCode = 12
         versionName = "1.1.0"
         resValue(
@@ -143,30 +143,31 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
+    namespace = "com.msiejak.barstore"
 }
 
 dependencies {
-    implementation("androidx.activity:activity-ktx:1.6.1")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.8.0-beta01")
+    implementation("androidx.activity:activity-ktx:1.8.2")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.mlkit:barcode-scanning:17.0.3")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("com.google.zxing:core:3.5.0")
     implementation(platform("com.google.firebase:firebase-bom:31.0.1"))
     implementation("com.google.firebase:firebase-crashlytics-ktx")
     implementation("com.google.firebase:firebase-analytics-ktx")
-    implementation("com.google.android.gms:play-services-oss-licenses:17.0.0")
-    implementation("androidx.core:core-splashscreen:1.0.0")
-    implementation("androidx.browser:browser:1.4.0")
-    debugImplementation("com.google.android.gms:play-services-ads:21.3.0")
-    "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:21.3.0")
-    releaseImplementation("com.google.android.gms:play-services-ads-lite:21.3.0")
+    implementation("com.google.android.gms:play-services-oss-licenses:17.0.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.browser:browser:1.7.0")
+    debugImplementation("com.google.android.gms:play-services-ads:22.6.0")
+    "dogfoodImplementation"("com.google.android.gms:play-services-ads-lite:22.6.0")
+    releaseImplementation("com.google.android.gms:play-services-ads-lite:22.6.0")
     debugImplementation(project(":internal"))
     "dogfoodImplementation"(project(":internal"))
     implementation(project(":nativetemplates"))
-    implementation("androidx.recyclerview:recyclerview:1.3.0-rc01")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
 
 }

@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk = 33
-    buildToolsVersion = "33.0.0"
+    compileSdk = 34
+    buildToolsVersion = "34.0.0"
 
     defaultConfig {
         minSdk = 26
-        targetSdk = 33
+        targetSdk = 34
     }
 
     buildTypes {
@@ -40,27 +40,28 @@ android {
 
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.0-rc02"
+        kotlinCompilerExtensionVersion = "1.5.1"
     }
     buildFeatures {
         compose = true
     }
+    namespace = "com.msiejak.internal"
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.8.0-beta01")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
-    implementation("androidx.activity:activity-compose:1.6.1")
+    implementation("androidx.core:core-ktx:1.12.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+    implementation("androidx.activity:activity-compose:1.8.2")
     // Compose Material Design
-    implementation("androidx.compose.material:material:1.4.0-alpha01")
-    implementation("androidx.compose.material3:material3:1.1.0-alpha01")
+    implementation("androidx.compose.material:material:1.5.4")
+    implementation("androidx.compose.material3:material3:1.1.2")
     // Animations
-    implementation("androidx.compose.animation:animation:1.4.0-alpha01")
+    implementation("androidx.compose.animation:animation:1.5.4")
     // Tooling support (Previews, etc.)
-    implementation("androidx.compose.ui:ui-tooling:1.4.0-alpha01")
+    implementation("androidx.compose.ui:ui-tooling:1.5.4")
     // Integration with ViewModels
-    implementation("com.google.android.material:compose-theme-adapter:1.1.21")
+    implementation("com.google.android.material:compose-theme-adapter:1.2.1")
 }
